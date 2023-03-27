@@ -66,7 +66,7 @@ export default function Index() {
           </div>
         </div>
         <div className="mx-auto mt-16 max-w-7xl text-center">
-          <Link to="labeller" className="text-xl underline text-blue-600 hover:text-blue-800 visited:text-purple-600 justify-center">
+          <Link to="patient" className="text-xl underline text-blue-600 hover:text-blue-800 visited:text-purple-600 justify-center">
             EUS Labeller
           </Link>
         </div>

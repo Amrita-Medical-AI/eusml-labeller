@@ -21,3 +21,6 @@ password
 note
   pk *String  # userId
   sk **String # noteId
+
+patient
+  pk *String # PatientMRD
