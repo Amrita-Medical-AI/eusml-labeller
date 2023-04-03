@@ -8,8 +8,20 @@ export async function createPatient({ mrd, name }) {
       patientName: name,
     });
     return {
-      id: result.pk,
-      patientName: result.name,
+      mrd: result.pk,
+      name: result.name,
     };
   }
   
+export async function getPatientByMRD({ patientMRD }) {
+    const db = await arc.tables();
+    const result = await db.patient.get({ pk: patientMRD });
+
+    if (result) {
+      return {
+        mrd: result.pk,
+        name: result.patientName,
+      };
+    }
+    return null;
+  }

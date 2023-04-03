@@ -19,7 +19,7 @@ export const action = async ({ request }) => {
   }
 
   const patient = await createPatient({ mrd, name });
-  return redirect("label");
+  return redirect(`/patient/label/${patient.mrd}`);
 };
 
 export default function LabellerIndexPage() {
