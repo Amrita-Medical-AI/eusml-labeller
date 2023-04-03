@@ -1,11 +1,11 @@
 import { Form, useLoaderData, useActionData } from "@remix-run/react";
 import {
   getPatientByMRD,
-  putStation1TimeStamps,
+  putProcedureTimeStamps,
 } from "~/models/patient.server";
 import { json, redirect } from "@remix-run/node";
 import { useState, useEffect } from "react";
-import { PlayIcon, StopIcon } from "@heroicons/react/solid";
+import { PlayIcon, StopIcon, ArrowCircleRightIcon } from "@heroicons/react/solid";
 
 function formatTime(time) {
   const hours = Math.floor(time / 3600);
@@ -17,69 +17,63 @@ function formatTime(time) {
 }
 
 function Stopwatch() {
-  const [time, setTime] = useState(0);
-  const [timer, setTimer] = useState(null);
-  const [startTimestamp, setStartTimestamp] = useState(0);
-  const [stopTimestamp, setStopTimestamp] = useState(0);
-
-  useEffect(() => {
-    return () => {
-      if (timer) {
+    const [time, setTime] = useState(0);
+    const [timer, setTimer] = useState(null);
+  
+    useEffect(() => {
+      return () => {
+        if (timer) {
+          clearInterval(timer);
+        }
+      };
+    }, [timer]);
+  
+    const toggleTimer = () => {
+      if (!timer) {
+        setTimer(setInterval(() => setTime((prevTime) => prevTime + 1), 1000));
+      } else {
         clearInterval(timer);
+        setTimer(null);
       }
     };
-  }, [timer]);
-
-  const toggleTimer = () => {
-    if (!timer) {
-      setStartTimestamp(Date.now());
-      setTimer(setInterval(() => setTime((prevTime) => prevTime + 1), 1000));
-    } else {
-      clearInterval(timer);
-      setTimer(null);
-      setStopTimestamp(Date.now());
-    }
-  };
-
-  const resetTimer = () => {
-    setTime(0);
-    setStartTimestamp(0);
-    setStopTimestamp(0);
-    if (timer) {
-      clearInterval(timer);
-      setTimer(null);
-    }
-  };
-
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <label className="text-teal-400">Stopwatch</label>
-      <span className="font-mono text-lg">{formatTime(time)}</span>
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={toggleTimer}
-          className="rounded-full bg-teal-400 p-1 hover:bg-teal-500 focus:bg-teal-300"
-        >
-          {timer ? (
-            <StopIcon className="h-6 w-6 text-white" />
-          ) : (
-            <PlayIcon className="h-6 w-6 text-white" />
-          )}
-        </button>
-        <button
-          type="button"
-          onClick={resetTimer}
-          className="rounded-full bg-red-400 p-1 hover:bg-red-500 focus:bg-red-300"
-        >
-          <StopIcon className="h-6 w-6 text-white" />
-        </button>
+  
+    const resetTimer = () => {
+      setTime(0);
+      if (timer) {
+        clearInterval(timer);
+        setTimer(null);
+      }
+    };
+  
+    return (
+      <div className="flex flex-col gap-2 items-center">
+        <label className="text-teal-400">Stopwatch</label>
+        <span className="text-lg font-mono">{formatTime(time)}</span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={toggleTimer}
+            className="rounded-full p-1 bg-teal-400 hover:bg-teal-500 focus:bg-teal-300"
+          >
+            {timer ? (
+              <StopIcon className="h-6 w-6 text-white" />
+            ) : (
+              <PlayIcon className="h-6 w-6 text-white" />
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={resetTimer}
+            className="rounded-full p-1 bg-red-400 hover:bg-red-500 focus:bg-red-300"
+          >
+            <ArrowCircleRightIcon className="h-6 w-6 text-white" />
+          </button>
+        </div>
+        <input type="hidden" name="startProcedure" value={time} />
+        <input type="hidden" name="stopProcedure" value={time} />
       </div>
-      <input type="hidden" name="station1Start" value={startTimestamp} />
-      <input type="hidden" name="station1Stop" value={stopTimestamp} />
-    </div>
-  );
-}
+    );
+  }
 
 export const loader = async ({ request, params }) => {
   const patientMRD = params.mrd;
@@ -93,13 +87,13 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const patientMRD = params.mrd;
-  const station1Start = formData.get("station1Start");
-  const station1Stop = formData.get("station1Stop");
+  const startProcedure = formData.get("startProcedure");
+  const stopProcedure = formData.get("stopProcedure");
 
-  const station1TimeStps = await putStation1TimeStamps({
+  const procedureTimeStap = await putProcedureTimeStamps({
     patientMRD,
-    station1Start,
-    station1Stop,
+    startProcedure,
+    stopProcedure,
   });
 
   return redirect(`/patient/${patientMRD}`);
@@ -126,7 +120,7 @@ export default function Label() {
             width: "45vh",
           }}
         >
-          <label className="text-3xl text-teal-400">Station 1</label>
+          <label className="text-3xl text-teal-400">Start Procedure</label>
           <Stopwatch />
           <div className="text-right">
             <button

@@ -28,7 +28,7 @@ export async function getPatientByMRD({ patientMRD }) {
     return null;
   }
 
-  export async function putStation1TimeStamps({ patientMRD, station1Start, station1Stop }) {
+  export async function putProcedureTimeStamps({ patientMRD, startProcedure, stopProcedure }) {
     const db = await arc.tables();
   
     const patient = await db.patient.get({ pk: patientMRD });
@@ -36,8 +36,8 @@ export async function getPatientByMRD({ patientMRD }) {
     if (patient) {
       const updatedPatient = {
         ...patient,
-        station1Start,
-        station1Stop,
+        startProcedure,
+        stopProcedure,
       };
   
       await db.patient.put(updatedPatient);
@@ -45,8 +45,8 @@ export async function getPatientByMRD({ patientMRD }) {
       return {
         mrd: updatedPatient.pk,
         name: updatedPatient.patientName,
-        station1Start: updatedPatient.station1Start,
-        station1Stop: updatedPatient.station1Stop,
+        startProcedure: updatedPatient.startProcedure,
+        stopProcedure: updatedPatient.stopProcedure,
       };
     }
     return null;
