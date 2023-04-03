@@ -17,7 +17,8 @@ function formatTime(time) {
 }
 
 function Stopwatch() {
-    const [time, setTime] = useState(0);
+    const [startTime, setStartTime] = useState(0);
+    const [endTime, setEndTime] = useState(0);
     const [timer, setTimer] = useState(null);
   
     useEffect(() => {
@@ -30,7 +31,7 @@ function Stopwatch() {
   
     const toggleTimer = () => {
       if (!timer) {
-        setTimer(setInterval(() => setTime((prevTime) => prevTime + 1), 1000));
+        setTimer(setInterval(() => setEndTime((prevTime) => prevTime + 1), 1000));
       } else {
         clearInterval(timer);
         setTimer(null);
@@ -38,7 +39,7 @@ function Stopwatch() {
     };
   
     const resetTimer = () => {
-      setTime(0);
+        setEndTime(0);
       if (timer) {
         clearInterval(timer);
         setTimer(null);
@@ -46,33 +47,39 @@ function Stopwatch() {
     };
   
     return (
-      <div className="flex flex-col gap-2 items-center">
-        <label className="text-teal-400">Stopwatch</label>
-        <span className="text-lg font-mono">{formatTime(time)}</span>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={toggleTimer}
-            className="rounded-full p-1 bg-teal-400 hover:bg-teal-500 focus:bg-teal-300"
+        <div className="flex flex-col gap-2 items-center">
+          <div
+            className="flex flex-row items-center justify-center gap-4 p-2 bg-teal-400 rounded w-48 h-14"
           >
-            {timer ? (
-              <StopIcon className="h-6 w-6 text-white" />
-            ) : (
-              <PlayIcon className="h-6 w-6 text-white" />
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={resetTimer}
-            className="rounded-full p-1 bg-red-400 hover:bg-red-500 focus:bg-red-300"
+            <span className="text-lg text-white font-mono">
+              {formatTime(endTime)}
+            </span>
+          </div>
+          <div
+            className="flex flex-row items-center bg-blue-500 rounded p-2"
           >
-            <ArrowCircleRightIcon className="h-6 w-6 text-white" />
-          </button>
+            <label
+              className="text-3xl text-white"
+              style={{ alignSelf: "flex-start" }}
+            >
+              Start Procedure
+            </label>
+            <button
+              type="button"
+              onClick={toggleTimer}
+              className="rounded-full p-1 bg-blue-400 hover:bg-blue-500 focus:bg-blue-300 ml-2"
+            >
+              {timer ? (
+                <StopIcon className="h-6 w-6 text-white" />
+              ) : (
+                <PlayIcon className="h-6 w-6 text-white" />
+              )}
+            </button>
+          </div>
+          <input type="hidden" name="startProcedure" value={startTime} />
+          <input type="hidden" name="stopProcedure" value={endTime} />
         </div>
-        <input type="hidden" name="startProcedure" value={time} />
-        <input type="hidden" name="stopProcedure" value={time} />
-      </div>
-    );
+      );
   }
 
 export const loader = async ({ request, params }) => {
@@ -120,7 +127,6 @@ export default function Label() {
             width: "45vh",
           }}
         >
-          <label className="text-3xl text-teal-400">Start Procedure</label>
           <Stopwatch />
           <div className="text-right">
             <button
