@@ -58,7 +58,7 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
           )}
         </button>
         <input
-            name="stop_procedure"
+            name="Stop Procedure"
             value={endTime}
             className="hidden"
           />

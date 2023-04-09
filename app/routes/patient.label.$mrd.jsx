@@ -28,19 +28,21 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const patientMRD = params.mrd;
-  const stopProcedure = formatTime(formData.get("stop_procedure"));
-  const startStation = formatTime(formData.get("start_station"));
-  const stopStation = formatTime(formData.get("stop_station"));
 
-  const procedureTimeStap = await putProcedureTimeStamps({
+  const data = {
     patientMRD,
-    stopProcedure,
-    startStation,
-    stopStation
-  });
+  };
+
+  for (let entry of formData.entries()) {
+    const [key, value] = entry;
+    data[key] = formatTime(value);
+  }
+
+  const procedureTimeStap = await putProcedureTimeStamps(data);
 
   return redirect(`/patient/${patientMRD}`);
 };
+
 
 export default function Label() {
   const actionData = useActionData();

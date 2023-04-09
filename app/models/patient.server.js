@@ -44,7 +44,7 @@ export async function putProcedureTimeStamps(props) {
     return {
       mrd: updatedPatient.pk,
       name: updatedPatient.patientName,
-      startProcedure: "00:00:00",
+      "Start Procedure": "00:00:00",
       ...rest,
     };
   }
@@ -58,7 +58,7 @@ export async function getProcedureTimeStamps({ patientMRD }) {
   const patient = await db.patient.get({ pk: patientMRD });
 
     return {
-      startProcedure: "00:00:00",
+      "Start Procedure": "00:00:00",
       ...patient
     };
   }

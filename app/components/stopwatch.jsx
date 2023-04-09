@@ -8,7 +8,10 @@ export default function Stopwatch() {
   return (
     <div className="flex flex-col items-center gap-2">
       <ProcedureStopwatch onEndTimeChange={setInitialTime} />
-      <StationStopwatch endTime={initialTime} />
+      <StationStopwatch endTime={initialTime} stationName="Station 1"/>
+      <StationStopwatch endTime={initialTime} stationName="Station 2"/>
+      <StationStopwatch endTime={initialTime} stationName="Station 3"/>
+      <StationStopwatch endTime={initialTime} stationName="FNA"/>
     </div>
   );
 }
