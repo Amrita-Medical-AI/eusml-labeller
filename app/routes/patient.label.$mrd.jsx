@@ -39,8 +39,6 @@ export const action = async ({ request, params }) => {
     stopStation
   });
 
-  console.log(procedureTimeStap);
-
   return redirect(`/patient/${patientMRD}`);
 };
 

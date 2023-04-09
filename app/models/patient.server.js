@@ -52,3 +52,16 @@ export async function putProcedureTimeStamps(props) {
   return null;
 }
 
+export async function getProcedureTimeStamps({ patientMRD }) {
+  const db = await arc.tables();
+
+  const patient = await db.patient.get({ pk: patientMRD });
+
+    return {
+      startProcedure: "00:00:00",
+      ...patient
+    };
+  }
+
+
+
