@@ -4,7 +4,17 @@ import {
   putProcedureTimeStamps,
 } from "~/models/patient.server";
 import { json, redirect } from "@remix-run/node";
-import Stopwatch from "~/components/stopwatch";
+import Stopwatch  from "~/components/stopwatch";
+
+const formatTime = (time) => {
+  const hours = Math.floor(time / 36000);
+  const minutes = Math.floor((time % 36000) / 600);
+  const seconds = Math.floor((time % 600) / 10);
+
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
 
 export const loader = async ({ request, params }) => {
   const patientMRD = params.mrd;
@@ -18,14 +28,18 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const patientMRD = params.mrd;
-  const startProcedure = formData.get("startProcedure");
-  const stopProcedure = formData.get("stopProcedure");
+  const stopProcedure = formatTime(formData.get("stop_procedure"));
+  const startStation = formatTime(formData.get("start_station"));
+  const stopStation = formatTime(formData.get("stop_station"));
 
   const procedureTimeStap = await putProcedureTimeStamps({
     patientMRD,
-    startProcedure,
     stopProcedure,
+    startStation,
+    stopStation
   });
+
+  console.log(procedureTimeStap);
 
   return redirect(`/patient/${patientMRD}`);
 };

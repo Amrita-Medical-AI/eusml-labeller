@@ -28,20 +28,15 @@ export async function getPatientByMRD({ patientMRD }) {
   return null;
 }
 
-export async function putProcedureTimeStamps({
-  patientMRD,
-  startProcedure,
-  stopProcedure,
-}) {
+export async function putProcedureTimeStamps(props) {
+  const { patientMRD, ...rest } = props;
   const db = await arc.tables();
-
   const patient = await db.patient.get({ pk: patientMRD });
 
   if (patient) {
     const updatedPatient = {
       ...patient,
-      startProcedure,
-      stopProcedure,
+      ...rest,
     };
 
     await db.patient.put(updatedPatient);
@@ -49,9 +44,11 @@ export async function putProcedureTimeStamps({
     return {
       mrd: updatedPatient.pk,
       name: updatedPatient.patientName,
-      startProcedure: updatedPatient.startProcedure,
-      stopProcedure: updatedPatient.stopProcedure,
+      startProcedure: "00:00:00",
+      ...rest,
     };
   }
+
   return null;
 }
+

@@ -4,8 +4,22 @@ import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
 export default function StationStopwatch({ endTime }) {
-  const [stationEndTime, setStationEndTime] = useState(0);
+  const [stationStartTime, setStationStartTime] = useState(null);
+  const [stationEndTime, setStationEndTime] = useState(null);
   const [stationTimer, setStationTimer] = useState(null);
+
+  const toggleStationTimer = () => {
+    if (stationTimer) {
+      clearInterval(stationTimer);
+      setStationTimer(null);
+    } else {
+      setStationStartTime(endTime); // set station start time here
+      setStationEndTime(endTime);
+      setStationTimer(
+        setInterval(() => setStationEndTime((prevTime) => prevTime + 1), 100)
+      );
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -14,19 +28,6 @@ export default function StationStopwatch({ endTime }) {
       }
     };
   }, [stationTimer]);
-
-  const toggleStationTimer = () => {
-    if (stationTimer) {
-      clearInterval(stationTimer);
-      setStationTimer(null);
-    } else {
-      setStationEndTime(endTime);
-      setStationTimer(
-        setInterval(() => setStationEndTime((prevTime) => prevTime + 1), 100)
-      );
-    }
-  };
-
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex h-14 w-48 flex-row items-center justify-center gap-4 rounded bg-teal-400 p-2">
@@ -52,6 +53,14 @@ export default function StationStopwatch({ endTime }) {
             <PlayIcon className="h-6 w-6 text-white" />
           )}
         </button>
+        {stationStartTime && (
+          <input
+            name="start_station"
+            value={stationStartTime}
+            className="hidden"
+          />
+        )}
+        <input name="stop_station" value={stationEndTime} className="hidden" />
       </div>
     </div>
   );

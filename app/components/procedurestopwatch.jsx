@@ -10,6 +10,7 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
   useEffect(() => {
     onEndTimeChange(endTime);
   }, [endTime, onEndTimeChange]);
+  
 
   useEffect(() => {
     return () => {
@@ -56,6 +57,11 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
             <PlayIcon className="h-6 w-6 text-white" />
           )}
         </button>
+        <input
+            name="stop_procedure"
+            value={endTime}
+            className="hidden"
+          />
       </div>
     </div>
   );
