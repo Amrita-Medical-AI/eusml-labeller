@@ -45,7 +45,7 @@ export default function Stopwatch() {
           className="text-3xl text-white"
           style={{ alignSelf: "flex-start" }}
         >
-          Start Procedure
+          {timer ? "Stop Procedure" : "Start Procedure"}
         </label>
         <button
           type="button"
