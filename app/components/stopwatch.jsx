@@ -32,13 +32,6 @@ export default function Stopwatch() {
     }
   };
 
-  const resetTimer = () => {
-    setEndTime(0);
-    if (timer) {
-      clearInterval(timer);
-      setTimer(null);
-    }
-  };
 
   return (
     <div className="flex flex-col items-center gap-2">
