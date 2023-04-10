@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
-export default function ProcedureStopwatch({ onEndTimeChange }) {
+export default function ProcedureStopwatch({ onEndTimeChange, onProcedureStart }) {
   const [endTime, setEndTime] = useState(0);
   const [timer, setTimer] = useState(null);
 
@@ -23,10 +23,12 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
       setTimer(
         setInterval(() => setEndTime((prevTime) => prevTime + 1), 100)
       );
+      onProcedureStart(true);
     } else {
       clearInterval(timer);
       setTimer(null);
       onEndTimeChange(endTime);
+      onProcedureStart(false);
     }
   };
 

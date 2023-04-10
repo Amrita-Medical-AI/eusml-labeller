@@ -1,8 +1,9 @@
+// StationStopwatch.js
 import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
-export default function StationStopwatch({ endTime, stationName, runningStation, setRunningStation }) {
+export default function StationStopwatch({ endTime, stationName, runningStation, setRunningStation, procedureStarted }) {
   const [stationStartTime, setStationStartTime] = useState(0);
   const [stationEndTime, setStationEndTime] = useState(0);
   const [stationTimer, setStationTimer] = useState(null);
@@ -40,7 +41,11 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
     };
   }, [stationTimer]);
 
-  const isDisabled = runningStation !== null && runningStation !== stationName && stationName !== 'FNA';
+  const isDisabled = (
+    (!procedureStarted) ||
+    (runningStation !== null && runningStation !== stationName && stationName !== 'FNA') ||
+    (stationName === 'FNA' && runningStation === null)
+  );
 
   return (
     <div className="flex flex-col items-center gap-2">
