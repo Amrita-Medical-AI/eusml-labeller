@@ -34,18 +34,22 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="flex h-14 w-48 flex-row items-center justify-center gap-4 rounded bg-teal-400 p-2">
-        <span className="font-mono text-lg text-white">
-          {formatTime(endTime)}
-        </span>
+      <div className="flex h-14 w-full flex-row items-center justify-center gap-4 rounded bg-teal-400 p-2 mx-4">
+        <div className="flex items-center justify-center h-14 w-96">
+          <span className="text-3xl font-mono text-white">
+            {formatTime(endTime)}
+          </span>
+        </div>
       </div>
       <div className="flex flex-row items-center rounded bg-blue-500 p-2">
-        <label
-          className="text-3xl text-white"
-          style={{ alignSelf: "flex-start" }}
-        >
-          {timer ? "Stop Procedure" : "Start Procedure"}
-        </label>
+        <div className="flex items-center justify-center h-14 w-96 mx-4">
+          <label
+            className="text-3xl text-white"
+            style={{ alignSelf: "flex-start" }}
+          >
+            {timer ? "Stop Procedure" : "Start Procedure"}
+          </label>
+        </div>
         <button
           type="button"
           onClick={toggleTimer}
@@ -65,4 +69,8 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
       </div>
     </div>
   );
+  
+  
+  
+  
 }
