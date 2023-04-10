@@ -30,19 +30,24 @@ export default function StationStopwatch({ endTime, stationName }) {
     };
   }, [stationTimer]);
 
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="flex flex-row items-center rounded bg-blue-500 p-2">
+return (
+  <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-row items-center rounded bg-slate-600 p-2">
+      <div className="relative flex items-center justify-center h-14 w-96 mx-4">
         <label
-          className="text-3xl text-white"
+          className="absolute left-0 right-0 text-3xl text-white text-center"
           style={{ alignSelf: "flex-start" }}
         >
-          {isStopped ? formatTime(stationEndTime) : stationTimer ? formatTime(stationEndTime) : `Start ${stationName} Timer`}
+          {isStopped
+            ? formatTime(stationEndTime)
+            : stationTimer
+            ? formatTime(stationEndTime)
+            : `Start ${stationName} Timer`}
         </label>
         <button
           type="button"
           onClick={toggleStationTimer}
-          className="ml-2 rounded-full bg-blue-400 p-1 hover:bg-blue-500 focus:bg-blue-300"
+          className="absolute right-0 ml-2 rounded-full bg-blue-400 p-1 hover:bg-blue-500 focus:bg-blue-300"
           disabled={isStopped}
         >
           {stationTimer ? (
@@ -63,5 +68,8 @@ export default function StationStopwatch({ endTime, stationName }) {
         />
       </div>
     </div>
-  );
+  </div>
+);
+
+
 }
