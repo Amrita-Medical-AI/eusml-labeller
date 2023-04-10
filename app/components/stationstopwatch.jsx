@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
-export default function StationStopwatch({ endTime, stationName }) {
+export default function StationStopwatch({ endTime, stationName, runningStation, setRunningStation }) {
   const [stationStartTime, setStationStartTime] = useState(0);
   const [stationEndTime, setStationEndTime] = useState(0);
   const [stationTimer, setStationTimer] = useState(null);
@@ -17,12 +17,18 @@ export default function StationStopwatch({ endTime, stationName }) {
         ...timePeriods,
         { start: stationStartTime, end: stationEndTime + 1 },
       ]);
+      if (stationName !== 'FNA') {
+        setRunningStation(null);
+      }
     } else {
       setStationStartTime(endTime);
       setStationEndTime(endTime);
       setStationTimer(
         setInterval(() => setStationEndTime((prevTime) => prevTime + 1), 100)
       );
+      if (stationName !== 'FNA') {
+        setRunningStation(stationName);
+      }
     }
   };
 
@@ -33,6 +39,8 @@ export default function StationStopwatch({ endTime, stationName }) {
       }
     };
   }, [stationTimer]);
+
+  const isDisabled = runningStation !== null && runningStation !== stationName && stationName !== 'FNA';
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -49,7 +57,8 @@ export default function StationStopwatch({ endTime, stationName }) {
           <button
             type="button"
             onClick={toggleStationTimer}
-            className="absolute right-0 ml-2 rounded-full bg-blue-400 p-1 hover:bg-blue-500 focus:bg-blue-300"
+            className={`absolute right-0 ml-2 rounded-full p-1 ${isDisabled ? 'bg-gray-400' : 'bg-blue-400 hover:bg-blue-500 focus:bg-blue-300'}`}
+            disabled={isDisabled}
           >
             {stationTimer ? (
               <StopIcon className="h-6 w-6 text-white" />

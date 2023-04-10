@@ -1,4 +1,3 @@
-// ProcedureStopwatch.js
 import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
@@ -10,7 +9,6 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
   useEffect(() => {
     onEndTimeChange(endTime);
   }, [endTime, onEndTimeChange]);
-  
 
   useEffect(() => {
     return () => {
@@ -69,8 +67,4 @@ export default function ProcedureStopwatch({ onEndTimeChange }) {
       </div>
     </div>
   );
-  
-  
-  
-  
 }
