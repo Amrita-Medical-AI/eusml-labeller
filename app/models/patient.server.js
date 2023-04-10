@@ -57,7 +57,7 @@ export async function getProcedureTimeStamps({ patientMRD }) {
 
   const patient = await db.patient.get({ pk: patientMRD });
 
-    return {
+  return {
       "Start Procedure": "00:00:00",
       ...patient
     };

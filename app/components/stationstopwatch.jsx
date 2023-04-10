@@ -6,13 +6,17 @@ export default function StationStopwatch({ endTime, stationName }) {
   const [stationStartTime, setStationStartTime] = useState(0);
   const [stationEndTime, setStationEndTime] = useState(0);
   const [stationTimer, setStationTimer] = useState(null);
-  const [isStopped, setIsStopped] = useState(false);
+  const [timePeriods, setTimePeriods] = useState([]);
 
   const toggleStationTimer = () => {
     if (stationTimer) {
       clearInterval(stationTimer);
       setStationTimer(null);
-      setIsStopped(true);
+      setStationEndTime((prevTime) => prevTime + 1);
+      setTimePeriods([
+        ...timePeriods,
+        { start: stationStartTime, end: stationEndTime + 1 },
+      ]);
     } else {
       setStationStartTime(endTime);
       setStationEndTime(endTime);
@@ -30,46 +34,43 @@ export default function StationStopwatch({ endTime, stationName }) {
     };
   }, [stationTimer]);
 
-return (
-  <div className="flex flex-col items-center gap-2">
-    <div className="flex flex-row items-center rounded bg-slate-600 p-2">
-      <div className="relative flex items-center justify-center h-14 w-96 mx-4">
-        <label
-          className="absolute left-0 right-0 text-3xl text-white text-center"
-          style={{ alignSelf: "flex-start" }}
-        >
-          {isStopped
-            ? formatTime(stationEndTime)
-            : stationTimer
-            ? formatTime(stationEndTime)
-            : `Start ${stationName} Timer`}
-        </label>
-        <button
-          type="button"
-          onClick={toggleStationTimer}
-          className="absolute right-0 ml-2 rounded-full bg-blue-400 p-1 hover:bg-blue-500 focus:bg-blue-300"
-          disabled={isStopped}
-        >
-          {stationTimer ? (
-            <StopIcon className="h-6 w-6 text-white" />
-          ) : (
-            <PlayIcon className="h-6 w-6 text-white" />
-          )}
-        </button>
-        <input
-          name={`Start ${stationName}`}
-          value={stationStartTime}
-          className="hidden"
-        />
-        <input
-          name={`Stop ${stationName}`}
-          value={stationEndTime}
-          className="hidden"
-        />
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-row items-center rounded bg-slate-600 p-2">
+        <div className="relative mx-4 flex h-14 w-96 items-center justify-center">
+          <label
+            className="absolute left-0 right-0 text-center text-3xl text-white"
+            style={{ alignSelf: "flex-start" }}
+          >
+            {stationTimer
+              ? formatTime(stationEndTime)
+              : `Start ${stationName} Timer`}
+          </label>
+          <button
+            type="button"
+            onClick={toggleStationTimer}
+            className="absolute right-0 ml-2 rounded-full bg-blue-400 p-1 hover:bg-blue-500 focus:bg-blue-300"
+          >
+            {stationTimer ? (
+              <StopIcon className="h-6 w-6 text-white" />
+            ) : (
+              <PlayIcon className="h-6 w-6 text-white" />
+            )}
+          </button>
+          {timePeriods.map((period, index) => (
+            <div key={index} className="hidden">
+              <input
+                name={`Start ${stationName} ${index + 1}`}
+                value={period.start}
+              />
+              <input
+                name={`Stop ${stationName} ${index + 1}`}
+                value={period.end}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
-
-
+  );
 }
