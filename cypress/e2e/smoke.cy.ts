@@ -14,7 +14,9 @@ describe("smoke tests", () => {
     cy.findByLabelText(/password/i).type(loginForm.password);
     cy.findByRole("button", { name: /create account/i }).click();
     
-    //@todo add a check for logout on patient page
+    /**
+     * @todo add a check for logout on patient page
+     */
 
   });
 });
