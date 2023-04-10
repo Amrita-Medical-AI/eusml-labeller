@@ -8,8 +8,7 @@ describe("smoke tests", () => {
     };
     cy.then(() => ({ email: loginForm.email })).as("user");
 
-    cy.visitAndCheck("/");
-    cy.findByRole("link", { name: /sign up/i }).click();
+    cy.visitAndCheck("/join");
 
     cy.findByRole("textbox", { name: /email/i }).type(loginForm.email);
     cy.findByLabelText(/password/i).type(loginForm.password);
