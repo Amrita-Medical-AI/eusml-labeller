@@ -21,9 +21,9 @@ export default function Patient() {
   const timeStamps = data.procedureTimeStamps;
 
   return (
-    <div className="w-full max-w-screen-md md:max-w-screen-lg mx-auto overflow-x-auto md:overflow-x-visible">
+    <div className="w-full mx-auto  bg-sky-900">
      <div className="relative min-h-screen flex flex-col items-center justify-center bg-sky-900">
-      <div className="flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center ">
         <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">
           <h1 className="p-2 text-center text-2xl font-bold text-white">
             MRD:{" "}
