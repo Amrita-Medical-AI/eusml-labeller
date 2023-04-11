@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
-export default function FNAStopwatch({ endTime, procedureStarted }) {
+export default function FNAStopwatch({ endTime, procedureStarted, runningStation }) {
   const [stationStartTime, setStationStartTime] = useState(0);
   const [stationEndTime, setStationEndTime] = useState(0);
   const [stationTimer, setStationTimer] = useState(null);
@@ -35,7 +35,7 @@ export default function FNAStopwatch({ endTime, procedureStarted }) {
     };
   }, [stationTimer]);
 
-  let isDisabled = !procedureStarted;
+  let isDisabled = !procedureStarted || !(runningStation !== null && runningStation !== "FNA");
 
   return (
     <div className="flex flex-col items-center gap-2">

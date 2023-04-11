@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProcedureStopwatch from "./procedurestopwatch";
 import StationStopwatch from "./stationstopwatch";
-import FNAStopwatch from "./FNAstopwatch";
+import FNAStopwatch from "./FNAStopwatch";
 
 export default function Stopwatch() {
   const [initialTime, setInitialTime] = useState(0);
@@ -14,7 +14,7 @@ export default function Stopwatch() {
       <StationStopwatch endTime={initialTime} stationName="Station 1" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} />
       <StationStopwatch endTime={initialTime} stationName="Station 2" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} />
       <StationStopwatch endTime={initialTime} stationName="Station 3" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} />
-      <FNAStopwatch endTime={initialTime} procedureStarted={procedureStarted} />
+      <FNAStopwatch endTime={initialTime} procedureStarted={procedureStarted} runningStation={runningStation} />
     </div>
   );
 }
