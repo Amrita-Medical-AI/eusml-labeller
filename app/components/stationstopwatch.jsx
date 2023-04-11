@@ -51,36 +51,28 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
     <button
       type="button"
       onClick={toggleStationTimer}
-      className={`flex flex-col items-center gap-2 ${isDisabled ? 'opacity-70' : ''}`}
+      className={`flex w-full flex-col items-center gap-2 md:min-w-[min-content] ${
+        isDisabled ? "cursor-not-allowed opacity-50" : ""
+      }`}
       disabled={isDisabled}
     >
-      <div className="flex flex-row items-center rounded bg-slate-600 p-2">
-        <div className="relative mx-4 flex h-14 w-96 items-center justify-center">
+      <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
+        <div className="relative w-full mx-4 flex h-24 items-center justify-center md:h-14 md:min-w-[min-content]">
           <label
-            className="absolute left-0 right-0 text-center text-3xl text-white"
+            className="w-full absolute left-0 right-0 text-center text-4xl text-white md:text-3xl px-4"
             style={{ alignSelf: "flex-start" }}
           >
             {stationTimer
               ? formatTime(stationEndTime)
               : `Start ${stationName} Timer`}
           </label>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleStationTimer();
-            }}
-            className={`absolute right-0 ml-2 rounded-full p-1 ${isDisabled ? 'bg-gray-400' : 'bg-blue-400 hover:bg-blue-500 focus:bg-blue-300'}`}
-            disabled={isDisabled}
-          >
-            {stationTimer ? (
-              <StopIcon className="h-6 w-6 text-white" />
-            ) : (
-              <PlayIcon className="h-6 w-6 text-white" />
-            )}
-          </button>
+          {stationTimer ? (
+            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+          ) : (
+            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+          )}
           {timePeriods.map((period, index) => (
-            <div key={index} className="hidden">
+            <div key={index} className="w-full hidden">
               <input
                 name={`Start ${stationName} ${index + 1}`}
                 value={period.start}
@@ -95,5 +87,6 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
       </div>
     </button>
   );
+  
   
 }

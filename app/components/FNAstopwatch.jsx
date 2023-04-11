@@ -41,11 +41,12 @@ export default function FNAStopwatch({ endTime, procedureStarted, runningStation
     <button
       type="button"
       onClick={toggleStationTimer}
-      className={`flex flex-col items-center gap-2 ${isDisabled ? 'opacity-70' : ''}`}
-      disabled={isDisabled}
+      className={`flex w-full flex-col items-center gap-2 md:min-w-[min-content] ${
+        isDisabled ? "cursor-not-allowed opacity-50" : ""
+      }`}      disabled={isDisabled}
     >
-    <div className="flex flex-col items-center gap-2">
-      <div className="flex flex-row items-center rounded bg-slate-600 p-2">
+    <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
+        <div className="relative w-full mx-4 flex h-24 items-center justify-center md:h-14 md:min-w-[min-content]">
         <div className="relative mx-4 flex h-14 w-96 items-center justify-center">
           <label
             className="absolute left-0 right-0 text-center text-3xl text-white"
