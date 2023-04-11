@@ -28,7 +28,6 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const patientMRD = params.mrd;
-
   const data = {
     patientMRD,
   };
@@ -39,6 +38,7 @@ export const action = async ({ request, params }) => {
   }
 
   const procedureTimeStap = await putProcedureTimeStamps(data);
+  
 
   return redirect(`/patient/${patientMRD}`);
 };
@@ -68,12 +68,6 @@ export default function Label() {
         >
           <Stopwatch />
           <div className="text-right">
-            <button
-              type="submit"
-              className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-            >
-              Save
-            </button>
           </div>
         </Form>
       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
@@ -18,6 +18,8 @@ export default function ProcedureStopwatch({ onEndTimeChange, onProcedureStart }
     };
   }, [timer]);
 
+  const hiddenSubmitButtonRef = useRef(null);
+
   const toggleTimer = () => {
     if (!timer) {
       setTimer(
@@ -29,11 +31,17 @@ export default function ProcedureStopwatch({ onEndTimeChange, onProcedureStart }
       setTimer(null);
       onEndTimeChange(endTime);
       onProcedureStart(false);
+      hiddenSubmitButtonRef.current.click();
     }
   };
 
   return (
     <button type="button" onClick={toggleTimer} className="w-full">
+      <input
+      ref={hiddenSubmitButtonRef}
+      type="submit"
+      style={{ display: "none" }}
+      />
       <div className="flex flex-col items-center gap-1 w-full">
         <div className="flex h-14 w-full flex-row items-center justify-center gap-4 rounded bg-teal-400 p-2 mx-4">
           <div className="flex items-center justify-center h-14 w-full">
