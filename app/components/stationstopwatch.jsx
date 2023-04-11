@@ -48,7 +48,12 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
   );
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <button
+      type="button"
+      onClick={toggleStationTimer}
+      className={`flex flex-col items-center gap-2 ${isDisabled ? 'opacity-70' : ''}`}
+      disabled={isDisabled}
+    >
       <div className="flex flex-row items-center rounded bg-slate-600 p-2">
         <div className="relative mx-4 flex h-14 w-96 items-center justify-center">
           <label
@@ -61,7 +66,10 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
           </label>
           <button
             type="button"
-            onClick={toggleStationTimer}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleStationTimer();
+            }}
             className={`absolute right-0 ml-2 rounded-full p-1 ${isDisabled ? 'bg-gray-400' : 'bg-blue-400 hover:bg-blue-500 focus:bg-blue-300'}`}
             disabled={isDisabled}
           >
@@ -85,6 +93,7 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
           ))}
         </div>
       </div>
-    </div>
+    </button>
   );
+  
 }

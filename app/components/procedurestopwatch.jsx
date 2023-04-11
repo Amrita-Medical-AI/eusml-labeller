@@ -33,6 +33,10 @@ export default function ProcedureStopwatch({ onEndTimeChange, onProcedureStart }
   };
 
   return (
+    <button
+      type="button"
+      onClick={toggleTimer}
+    >
     <div className="flex flex-col items-center gap-2">
       <div className="flex h-14 w-full flex-row items-center justify-center gap-4 rounded bg-teal-400 p-2 mx-4">
         <div className="flex items-center justify-center h-14 w-96">
@@ -68,5 +72,6 @@ export default function ProcedureStopwatch({ onEndTimeChange, onProcedureStart }
           />
       </div>
     </div>
+    </button>
   );
 }
