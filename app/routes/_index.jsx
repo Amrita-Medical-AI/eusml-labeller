@@ -45,13 +45,13 @@ export default function LabellerIndexPage() {
           width: "45vh",
         }}
       >
-        <label className="text-teal-400">Patient MRD</label>
+        <label className="text-4xl text-teal-400">Patient MRD</label>
         <input
           ref={mrdRef}
           name="mrd"
-          type="text"
+          type="number"
           id="mrd"
-          className="border-b-2 border-blue-500 bg-slate-800 text-white"
+          className="border-b-2 border-blue-500 bg-slate-800 text-4xl text-white"
           aria-invalid={actionData?.errors?.mrd ? true : undefined}
           aria-errormessage={actionData?.errors?.mrd ? "mrd-error" : undefined}
         />
@@ -60,12 +60,12 @@ export default function LabellerIndexPage() {
             {actionData.errors.mrd}
           </div>
         )}
-        <label className="text-teal-400">Patient Name</label>
+        <label className="text-4xl text-teal-400">Patient Name</label>
         <input
           name="name"
           id="name"
           type="text"
-          className="border-b-2 border-blue-500 bg-slate-800 text-white"
+          className="border-b-2 border-blue-500 bg-slate-800 text-4xl text-white"
           aria-invalid={actionData?.errors?.name ? true : undefined}
           aria-errormessage={
             actionData?.errors?.name ? "name-error" : undefined
