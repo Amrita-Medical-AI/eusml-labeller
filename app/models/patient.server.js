@@ -9,7 +9,7 @@ export async function createPatient({ mrd, name }) {
   });
   return {
     mrd: result.pk,
-    name: result.name,
+    name: result.patientName,
   };
 }
 
@@ -32,13 +32,13 @@ export async function putProcedureTimeStamps(props) {
   const { patientMRD, ...rest } = props;
   const db = await arc.tables();
   const patient = await db.patient.get({ pk: patientMRD });
-  const Timestamp = new Date().toISOString();
+  const date = new Date().toISOString().split('T')[0];
 
   if (patient) {
     const updatedPatient = {
       ...patient,
       ...rest,
-      'Timestamp': Timestamp,
+      'Date': date,
     };
 
     await db.patient.put(updatedPatient);
@@ -58,7 +58,7 @@ export async function getProcedureTimeStamps({ patientMRD }) {
   const db = await arc.tables();
 
   const patient = await db.patient.get({ pk: patientMRD });
-  delete patient.Timestamp;
+  delete patient.Date;
   return {
     "Start Procedure": "00:00:00",
     ...patient,
