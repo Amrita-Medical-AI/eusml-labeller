@@ -32,11 +32,13 @@ export async function putProcedureTimeStamps(props) {
   const { patientMRD, ...rest } = props;
   const db = await arc.tables();
   const patient = await db.patient.get({ pk: patientMRD });
+  const Timestamp = new Date().toISOString();
 
   if (patient) {
     const updatedPatient = {
       ...patient,
       ...rest,
+      'Timestamp': Timestamp,
     };
 
     await db.patient.put(updatedPatient);
@@ -56,7 +58,7 @@ export async function getProcedureTimeStamps({ patientMRD }) {
   const db = await arc.tables();
 
   const patient = await db.patient.get({ pk: patientMRD });
-
+  delete patient.Timestamp;
   return {
     "Start Procedure": "00:00:00",
     ...patient,
