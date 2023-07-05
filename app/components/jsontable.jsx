@@ -2,7 +2,7 @@ export default function JsonTable({ data }) {
   const groupedData = {};
 
   Object.keys(data).forEach((key) => {
-    if (key === "pk") return;
+    if (key === "pk" || key == "Date" || key == "mrd") return;
     const regex = /^(.+)\s\d+$/;
 
     const match = key.match(regex);

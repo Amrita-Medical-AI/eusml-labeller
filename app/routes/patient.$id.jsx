@@ -1,15 +1,15 @@
 import { useLoaderData, Link } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import {
-  getPatientByMRD,
+  getPatientById,
   getProcedureTimeStamps,
 } from "~/models/patient.server";
 import JsonTable from "~/components/jsontable";
 
 export const loader = async ({ request, params }) => {
-  const patientMRD = params.mrd;
-  const patient = await getPatientByMRD({ patientMRD });
-  const procedureTimeStamps = await getProcedureTimeStamps({ patientMRD });
+  const patientId = params.id;
+  const patient = await getPatientById({ patientId });
+  const procedureTimeStamps = await getProcedureTimeStamps({ patientId });
   if (!patient) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -29,13 +29,13 @@ export default function Patient() {
             MRD:{" "}
           </h1>
           <h1 className="p-2 text-center text-2xl font-bold text-teal-400">
-            {data.patient.mrd}
+            {data?.patient?.mrd}
           </h1>
           <h1 className="p-2 text-center text-2xl font-bold text-white">
             Name:{" "}
           </h1>
           <h1 className="p-2 text-center text-2xl font-bold text-teal-400">
-            {data.patient.name}
+            {data?.patient?.name}
           </h1>
         </div>
         <div className="flex min-h-screen w-full flex-col items-center justify-center">
