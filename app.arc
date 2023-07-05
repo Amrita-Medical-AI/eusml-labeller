@@ -19,4 +19,4 @@ password
   pk *String # userId
 
 patient
-  pk *String # PatientMRD
+  pk *String # PatientId
