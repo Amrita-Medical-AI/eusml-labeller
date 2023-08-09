@@ -1,6 +1,6 @@
 import { Form, useLoaderData, useActionData } from "@remix-run/react";
 import {
-  getPatientByMRD,
+  getPatientById,
   putProcedureTimeStamps,
 } from "~/models/patient.server";
 import { json, redirect } from "@remix-run/node";
@@ -17,8 +17,8 @@ const formatTime = (time) => {
 };
 
 export const loader = async ({ request, params }) => {
-  const patientMRD = params.mrd;
-  const patient = await getPatientByMRD({ patientMRD });
+  const patientId = params.id;
+  const patient = await getPatientById({ patientId });
   if (!patient) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -27,20 +27,20 @@ export const loader = async ({ request, params }) => {
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
-  const patientMRD = params.mrd;
+  const patientId = params.id;
   const data = {
-    patientMRD,
+    patientId,
   };
 
   for (let entry of formData.entries()) {
     const [key, value] = entry;
     data[key] = formatTime(value);
   }
-
+  
   const procedureTimeStap = await putProcedureTimeStamps(data);
   
 
-  return redirect(`/patient/${patientMRD}`);
+  return redirect(`/patient/${patientId}`);
 };
 
 export default function Label() {
@@ -53,7 +53,7 @@ export default function Label() {
         <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">
           <h1 className="p-2 text-center text-4xl font-bold text-white">MRD</h1>
           <h1 className="p-2 text-center text-4xl font-bold text-teal-400">
-            {data.patient.mrd}
+            {data?.patient?.mrd}
           </h1>
         </div>
         <Form

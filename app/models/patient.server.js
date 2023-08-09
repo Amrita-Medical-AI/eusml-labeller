@@ -1,25 +1,30 @@
 import arc from "@architect/functions";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function createPatient({ mrd, name }) {
   const db = await arc.tables();
+  const patientID = uuidv4();
 
   const result = await db.patient.put({
-    pk: mrd,
+    pk: patientID,
+    mrd: mrd,
     patientName: name,
   });
   return {
-    mrd: result.pk,
-    name: result.name,
+    patientId: result.pk,
+    mrd: result.mrd,
+    name: result.patientName,
   };
 }
 
-export async function getPatientByMRD({ patientMRD }) {
+export async function getPatientById({ patientId }) {
   const db = await arc.tables();
-  const result = await db.patient.get({ pk: patientMRD });
+  const result = await db.patient.get({ pk: patientId });
 
   if (result) {
     return {
-      mrd: result.pk,
+      patientId: result.pk,
+      mrd: result.mrd,
       name: result.patientName,
       station1Start: result.station1Start,
       station1Stop: result.station1Stop,
@@ -29,20 +34,23 @@ export async function getPatientByMRD({ patientMRD }) {
 }
 
 export async function putProcedureTimeStamps(props) {
-  const { patientMRD, ...rest } = props;
+  const { patientId, ...rest } = props;
   const db = await arc.tables();
-  const patient = await db.patient.get({ pk: patientMRD });
+  const patient = await db.patient.get({ pk: patientId });
+  const date = new Date().toISOString().split('T')[0];
 
   if (patient) {
     const updatedPatient = {
       ...patient,
       ...rest,
+      'Date': date,
     };
 
     await db.patient.put(updatedPatient);
 
     return {
-      mrd: updatedPatient.pk,
+      patientId: updatedPatient.pk,
+      mrd: updatedPatient.mrd,
       name: updatedPatient.patientName,
       "Start Procedure": "00:00:00",
       ...rest,
@@ -52,10 +60,10 @@ export async function putProcedureTimeStamps(props) {
   return null;
 }
 
-export async function getProcedureTimeStamps({ patientMRD }) {
+export async function getProcedureTimeStamps({ patientId }) {
   const db = await arc.tables();
 
-  const patient = await db.patient.get({ pk: patientMRD });
+  const patient = await db.patient.get({ pk: patientId });
 
   return {
     "Start Procedure": "00:00:00",
