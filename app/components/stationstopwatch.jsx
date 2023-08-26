@@ -3,7 +3,13 @@ import { useState, useEffect } from "react";
 import { PlayIcon, StopIcon } from "@heroicons/react/solid";
 import { formatTime } from "./utils";
 
-export default function StationStopwatch({ endTime, stationName, runningStation, setRunningStation, procedureStarted }) {
+export default function StationStopwatch({
+  endTime,
+  stationName,
+  runningStation,
+  setRunningStation,
+  procedureStarted,
+}) {
   const [stationStartTime, setStationStartTime] = useState(0);
   const [stationEndTime, setStationEndTime] = useState(0);
   const [stationTimer, setStationTimer] = useState(null);
@@ -18,7 +24,7 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
         ...timePeriods,
         { start: stationStartTime, end: stationEndTime + 1 },
       ]);
-      if (stationName !== 'FNA') {
+      if (stationName !== "FNA") {
         setRunningStation(null);
       }
     } else {
@@ -27,7 +33,7 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
       setStationTimer(
         setInterval(() => setStationEndTime((prevTime) => prevTime + 1), 100)
       );
-      if (stationName !== 'FNA') {
+      if (stationName !== "FNA") {
         setRunningStation(stationName);
       }
     }
@@ -41,11 +47,12 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
     };
   }, [stationTimer]);
 
-  const isDisabled = (
-    (!procedureStarted) ||
-    (runningStation !== null && runningStation !== stationName && stationName !== 'FNA') ||
-    (stationName === 'FNA' && runningStation === null)
-  );
+  const isDisabled =
+    !procedureStarted ||
+    (runningStation !== null &&
+      runningStation !== stationName &&
+      stationName !== "FNA") ||
+    (stationName === "FNA" && runningStation === null);
 
   return (
     <button
@@ -57,22 +64,25 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
       disabled={isDisabled}
     >
       <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
-        <div className="relative w-full mx-4 flex h-24 items-center justify-center md:h-14 md:min-w-[min-content]">
-          <label
-            className="w-full absolute left-0 right-0 text-center text-4xl text-white md:text-3xl px-4"
+        <div className="relative mx-3 flex h-24 w-full items-center justify-center md:h-14 md:min-w-[min-content] flex-row">
+          {stationTimer?
+          <div className="absolute left-0 w-full px-4 text-start my-auto text-white">
+            <label className="font-light text-sm ">{stationName}</label>
+            <label className="text-lg md:text-xl"> {formatTime(stationEndTime) }</label>
+          </div>
+          :<label
+            className="absolute left-0 top-3 w-full px-4 text-center text-lg my-auto text-white md:text-xl"
             style={{ alignSelf: "flex-start" }}
           >
-            {stationTimer
-              ? formatTime(stationEndTime)
-              : `Start ${stationName} Timer`}
-          </label>
+            {stationName}
+          </label>}
           {stationTimer ? (
-            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
           ) : (
-            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
           )}
           {timePeriods.map((period, index) => (
-            <div key={index} className="w-full hidden">
+            <div key={index} className="hidden w-full">
               <input
                 name={`Start ${stationName} ${index + 1}`}
                 value={period.start}
@@ -87,6 +97,4 @@ export default function StationStopwatch({ endTime, stationName, runningStation,
       </div>
     </button>
   );
-  
-  
 }
