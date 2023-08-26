@@ -16,9 +16,6 @@ export default function Stopwatch() {
         onEndTimeChange={setInitialTime}
         onProcedureStart={setProcedureStarted}
       />
-      {/* <StationStopwatch endTime={initialTime} stationName="Station 1" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} />
-      <StationStopwatch endTime={initialTime} stationName="Station 2" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} />
-      <StationStopwatch endTime={initialTime} stationName="Station 3" runningStation={runningStation} setRunningStation={setRunningStation} procedureStarted={procedureStarted} /> */}
       <TimerGrid
         endTime={initialTime}
         runningStation={runningStation}

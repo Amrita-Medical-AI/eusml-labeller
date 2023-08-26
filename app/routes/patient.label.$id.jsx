@@ -36,7 +36,6 @@ export const action = async ({ request, params }) => {
     const [key, value] = entry;
     data[key] = formatTime(value);
   }
-  
   const procedureTimeStap = await putProcedureTimeStamps(data);
   
 
