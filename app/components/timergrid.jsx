@@ -41,7 +41,7 @@ const StationColumns = ({
       <div className="flex flex-col rounded bg-gray-200 p-4 w-full gap-y-5">
         <PositionStopwatch
           endTime={endTime}
-          positionName="Stomach"
+          positionName="Stomach 1"
           runningPosition={runningPosition}
           setRunningPosition={setRunningPosition}
           procedureStarted={procedureStarted}
@@ -49,7 +49,7 @@ const StationColumns = ({
 
         <PositionStopwatch
           endTime={endTime}
-          positionName="D1"
+          positionName="D 1"
           runningPosition={runningPosition}
           setRunningPosition={setRunningPosition}
           procedureStarted={procedureStarted}
@@ -57,7 +57,7 @@ const StationColumns = ({
 
         <PositionStopwatch
           endTime={endTime}
-          positionName="D2"
+          positionName="D 2"
           runningPosition={runningPosition}
           setRunningPosition={setRunningPosition}
           procedureStarted={procedureStarted}

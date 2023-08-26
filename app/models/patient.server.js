@@ -39,6 +39,30 @@ export async function getPatientById({ patientId }) {
   return null;
 }
 
+export async function updatePatientDetails({ patientId, updatedData }) {
+  const db = await arc.tables();
+  const patient = await db.patient.get({ pk: patientId });
+
+  if (patient) {
+    const updatedPatient = {
+      ...patient,
+      ...updatedData,
+    };
+
+    await db.patient.put(updatedPatient);
+
+    return {
+      patientId: updatedPatient.pk,
+      mrd: updatedPatient.mrd,
+      name: updatedPatient.patientName,
+      morphology: updatedPatient.morphology,
+      doctor: updatedPatient.doctor,
+    };
+  }
+
+  return null;
+}
+
 export async function putProcedureTimeStamps(props) {
   const { patientId, ...rest } = props;
   const db = await arc.tables();
