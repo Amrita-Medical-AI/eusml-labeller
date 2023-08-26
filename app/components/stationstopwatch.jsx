@@ -66,7 +66,7 @@ export default function StationStopwatch({
       <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
         <div className="relative mx-3 flex h-24 w-full items-center justify-center md:h-14 md:min-w-[min-content] flex-row">
           {stationTimer?
-          <div className="absolute left-0 w-full px-4 text-start my-auto text-white">
+          <div className="absolute left-0 w-full flex flex-col px-4 text-start my-auto text-white">
             <label className="font-light text-sm ">{stationName}</label>
             <label className="text-lg md:text-xl"> {formatTime(stationEndTime) }</label>
           </div>

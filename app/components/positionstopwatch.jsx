@@ -43,9 +43,7 @@ export default function PositionStopwatch({ endTime, positionName, runningPositi
 
   const isDisabled = (
     (!procedureStarted) ||
-    (runningPosition !== null && runningPosition !== positionName && positionName !== 'FNA') ||
-    (positionName === 'FNA' && runningPosition === null)
-  );
+    (runningPosition !== null && runningPosition !== positionName));
 
   return (
     <button
@@ -57,22 +55,25 @@ export default function PositionStopwatch({ endTime, positionName, runningPositi
       disabled={isDisabled}
     >
       <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
-        <div className="relative w-full mx-4 flex h-24 items-center justify-center md:h-14 md:min-w-[min-content]">
-          <label
-            className="w-full absolute left-0 right-0 text-center text-4xl text-white md:text-3xl px-4"
+        <div className="relative mx-3 flex h-24 w-full items-center justify-center md:h-14 md:min-w-[min-content] flex-row">
+          {positionTimer?
+          <div className="absolute left-0 w-full px-4 text-start my-auto text-white flex flex-col">
+            <label className="font-light text-sm ">{positionName}</label>
+            <label className="text-lg md:text-xl"> {formatTime(positionEndTime) }</label>
+          </div>
+          :<label
+            className="absolute left-0 top-3 w-full px-4 text-center text-lg my-auto text-white md:text-xl"
             style={{ alignSelf: "flex-start" }}
           >
-            {positionTimer
-              ? formatTime(positionEndTime)
-              : `${positionName} Timer`}
-          </label>
+            {positionName}
+          </label>}
           {positionTimer ? (
-            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
           ) : (
-            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-6 md:w-6" />
+            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
           )}
           {timePeriods.map((period, index) => (
-            <div key={index} className="w-full hidden">
+            <div key={index} className="hidden w-full">
               <input
                 name={`Start ${positionName} ${index + 1}`}
                 value={period.start}
