@@ -58,28 +58,27 @@ export default function StationStopwatch({
     <button
       type="button"
       onClick={toggleStationTimer}
-      className={`flex w-full flex-col items-center gap-2 md:min-w-[min-content] ${
-        isDisabled ? "cursor-not-allowed opacity-50" : ""
+      className={`flex w-full flex-col items-center gap-2 md:min-w-[min-content] rounded ${
+        isDisabled ? "cursor-not-allowed bg-slate-600/50 text-gray-300 drop-shadow-2xl" : "bg-slate-600 text-white shadow-lg"
       }`}
       disabled={isDisabled}
     >
-      <div className="flex w-full flex-row items-center rounded bg-slate-600 p-2">
-        <div className="relative mx-3 flex h-24 w-full items-center justify-center md:h-14 md:min-w-[min-content] flex-row">
+      <div className="flex w-full flex-row items-center p-2">
+        <div className="relative flex w-full items-center justify-center h-16 min-w-[min-content] flex-row">
           {stationTimer?
-          <div className="absolute left-0 w-full flex flex-col px-4 text-start my-auto text-white">
+          <div className="absolute left-0 w-full mr-5 px-2 md:px-4 text-start my-auto flex flex-col">
             <label className="font-light text-sm ">{stationName}</label>
             <label className="text-lg md:text-xl"> {formatTime(stationEndTime) }</label>
           </div>
           :<label
-            className="absolute left-0 top-3 w-full px-4 text-center text-lg my-auto text-white md:text-xl"
-            style={{ alignSelf: "flex-start" }}
+            className="absolute left-0 w-full px-2 md:px-4 text-center text-lg my-auto md:text-xl"
           >
             {stationName}
           </label>}
           {stationTimer ? (
-            <StopIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
+            <StopIcon className="absolute top-0 right-0 ml-3 h-7 w-7" />
           ) : (
-            <PlayIcon className="absolute right-0 ml-2 h-8 w-8 text-white md:h-7 md:w-7" />
+            <PlayIcon className="absolute top-0 right-0 ml-3 h-7 w-7" />
           )}
           {timePeriods.map((period, index) => (
             <div key={index} className="hidden w-full">

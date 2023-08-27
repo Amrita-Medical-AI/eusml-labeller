@@ -11,9 +11,9 @@ const StationColumns = ({
   setRunningPosition,
 }) => {
   return (
-    <div className="flex gap-4 md:min-w-full my-3">
+    <div className="my-3 flex min-w-full gap-4">
       {/* First Column */}
-      <div className="flex flex-col rounded bg-gray-200 p-4 w-full gap-y-5">
+      <div className="flex w-full flex-col gap-y-5 rounded bg-teal-300 p-4">
         <StationStopwatch
           endTime={endTime}
           stationName="Station 1"
@@ -38,7 +38,7 @@ const StationColumns = ({
       </div>
 
       {/* Second Column */}
-      <div className="flex flex-col rounded bg-gray-200 p-4 w-full gap-y-5">
+      <div className="flex w-full flex-col gap-y-5 rounded bg-teal-300 p-4">
         <PositionStopwatch
           endTime={endTime}
           positionName="Stomach 1"
