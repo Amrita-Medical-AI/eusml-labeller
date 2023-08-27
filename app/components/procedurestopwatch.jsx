@@ -5,6 +5,7 @@ import { formatTime } from "./utils";
 export default function ProcedureStopwatch({
   onEndTimeChange,
   onProcedureStart,
+  secondaryStart,
 }) {
   const [endTime, setEndTime] = useState(0);
   const [timer, setTimer] = useState(null);
@@ -27,6 +28,7 @@ export default function ProcedureStopwatch({
     if (!timer) {
       setTimer(setInterval(() => setEndTime((prevTime) => prevTime + 1), 100));
       onProcedureStart(true);
+      secondaryStart();
     } else {
       clearInterval(timer);
       setTimer(null);
