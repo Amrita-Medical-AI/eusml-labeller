@@ -37,7 +37,6 @@ export const action = async ({ request, params }) => {
     data[key] = formatTime(value);
   }
   const procedureTimeStap = await putProcedureTimeStamps(data);
-  
 
   return redirect(`/patient/${patientId}`);
 };
@@ -66,8 +65,7 @@ export default function Label() {
           }}
         >
           <Stopwatch />
-          <div className="text-right">
-          </div>
+          <div className="text-right"></div>
         </Form>
       </div>
     </div>
