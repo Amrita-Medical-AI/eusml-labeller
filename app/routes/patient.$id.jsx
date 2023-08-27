@@ -73,7 +73,7 @@ export default function Patient() {
   return (
     <div className="mx-auto w-full  bg-sky-900">
       <UpdateMorphologyModal isOpen={modalOpen} onClose={toggleModal}>
-        <Form method="post">
+        <Form method="post" onSubmit={toggleModal}>
           <label className="mx-5 mt-5 text-2xl text-teal-400">
             Update Morphology
           </label>
@@ -101,7 +101,6 @@ export default function Patient() {
             </button>
             <button
               className=" m-3 rounded-md bg-teal-600 px-4 py-3 text-gray-100 hover:bg-teal-800 hover:text-gray-300"
-              // onClick={onApply}
               type="submit"
             >
               Update
