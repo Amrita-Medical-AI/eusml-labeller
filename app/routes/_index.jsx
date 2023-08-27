@@ -44,30 +44,12 @@ export const action = async ({ request }) => {
 
 export default function LabellerIndexPage() {
   const actionData = useActionData();
-  // const mrdRef = React.useRef(null);
-  // const nameRef = React.useRef(null);
-  // const morphologyRef = React.useRef(null);
-  // const doctorRef = React.useRef(null);
 
   const [selectedMorphology, setSelectedMorphology] = React.useState([]);
   const [selectedDoctor, setSelectedDoctor] = React.useState("");
 
   const morphologyOptions = ["Normal", "CCP", "Cysts", "Others"];
   const doctorsOptions = ["Dr. Priya", "Dr. Anoop", "Dr. Sharon"];
-
-  // React.useEffect(() => {
-  //   if (actionData?.errors?.mrd) {
-  //     mrdRef.current?.focus();
-  //   } else if (actionData?.errors?.name) {
-  //     nameRef.current?.focus();
-  //   }
-  //   else if (actionData?.errors?.morphology) {
-  //     morphologyRef.current?.focus();
-  //   }
-  //   else if (actionData?.errors?.doctor) {
-  //     doctorRef.current?.focus();
-  //   }
-  // }, [actionData]);
 
   const handleCheckboxChange = (option) => {
     let updatedOptions = [];
@@ -102,7 +84,7 @@ export default function LabellerIndexPage() {
           name="name"
           id="name"
           type="text"
-          className="border-0 border-b-2 border-blue-500 bg-slate-800 text-4xl text-white"
+          className="border-0 border-b-2 border-blue-500 bg-slate-800 px-3 text-4xl text-white"
           aria-invalid={actionData?.errors?.name ? true : undefined}
           aria-errormessage={
             actionData?.errors?.name ? "name-error" : undefined
@@ -120,7 +102,7 @@ export default function LabellerIndexPage() {
           name="mrd"
           type="number"
           id="mrd"
-          className="border-0 border-b-2 border-blue-500 bg-slate-800 text-4xl text-white"
+          className="border-0 border-b-2 border-blue-500 bg-slate-800 px-3 text-4xl text-white"
           aria-invalid={actionData?.errors?.mrd ? true : undefined}
           aria-errormessage={actionData?.errors?.mrd ? "mrd-error" : undefined}
         />
@@ -134,7 +116,7 @@ export default function LabellerIndexPage() {
         <label className="mt-5 text-3xl text-teal-400">Morphology</label>
         <div className="flex flex-col gap-2 text-white">
           {morphologyOptions.map((option) => (
-            <label key={option} className="flex items-center gap-3">
+            <label key={option} className="mx-3 flex items-center gap-3">
               <input
                 type="checkbox"
                 name="morphology"
@@ -165,7 +147,7 @@ export default function LabellerIndexPage() {
           name="doctor"
           value={selectedDoctor}
           onChange={(e) => setSelectedDoctor(e.target.value)}
-          className="rounded-md bg-offwhite px-4 py-3 text-xl text-white"
+          className="mx-3 rounded-md bg-offwhite px-4 py-3 text-xl text-white"
           aria-invalid={actionData?.errors?.doctor ? true : undefined}
           aria-errormessage={
             actionData?.errors?.doctor ? "doctor-error" : undefined

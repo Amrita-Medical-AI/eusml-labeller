@@ -1,15 +1,15 @@
 import React from "react";
 import { useLoaderData, Link, Form } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   getPatientById,
   getProcedureTimeStamps,
-  updatePatientDetails
+  updatePatientDetails,
 } from "~/models/patient.server";
 import JsonTable from "~/components/jsontable";
 import UpdateMorphologyModal from "../components/updateMorphology";
 
-export const action = async ({ request, params}) => {
+export const action = async ({ request, params }) => {
   let formData = await request.formData();
   const patientId = params.id;
 
@@ -21,16 +21,15 @@ export const action = async ({ request, params}) => {
     );
   }
   const updatedData = {
-    morphology: morphology
+    morphology: morphology,
   };
   const newData = await updatePatientDetails({
     patientId: patientId,
     updatedData: updatedData,
   });
 
-  return json({ newData });
-
-}
+  return redirect(`/patient/${patientId}`);
+};
 
 export const loader = async ({ request, params }) => {
   const patientId = params.id;
@@ -73,37 +72,41 @@ export default function Patient() {
 
   return (
     <div className="mx-auto w-full  bg-sky-900">
-      <UpdateMorphologyModal isOpen={modalOpen} onClose={toggleModal} >
+      <UpdateMorphologyModal isOpen={modalOpen} onClose={toggleModal}>
         <Form method="post">
-        <label className="mt-5 text-2xl text-teal-400 mx-5">Update Morphology</label>
-        <div className="flex flex-col gap-2 text-white my-3">
-          {morphologyOptions.map((option) => (
-            <label key={option} className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                name="morphology"
-                value={option}
-                checked={selectedMorphology.includes(option)}
-                onChange={() => handleCheckboxChange(option)}
-                className=" rounded-md border-teal-500 bg-teal-50 p-4 text-2xl font-medium text-teal-700 focus:ring-teal-200"
-              />
-              {option}
-            </label>
-          ))}
-        </div>
-        <button
-          className=" text-gray-100 hover:text-gray-300 hover:bg-red-600 bg-red-500 px-4 py-3 m-3 rounded-md"
-          onClick={toggleModal}
-        >
-          Close
-        </button>
-        <button
-          className=" text-gray-100 hover:text-gray-300 hover:bg-teal-800 bg-teal-600 px-4 py-3 m-3 rounded-md"
-        //   onClick={onApply}
-        type="submit"
-        >
-          Update
-        </button>
+          <label className="mx-5 mt-5 text-2xl text-teal-400">
+            Update Morphology
+          </label>
+          <div className="my-4 flex flex-col gap-2 text-white">
+            {morphologyOptions.map((option) => (
+              <label key={option} className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="morphology"
+                  value={option}
+                  checked={selectedMorphology.includes(option)}
+                  onChange={() => handleCheckboxChange(option)}
+                  className=" rounded-md border-teal-500 bg-teal-50 p-4 text-2xl font-medium text-teal-700 focus:ring-teal-200"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+          <div className="flex flex-row justify-between">
+            <button
+              className=" m-3 rounded-md bg-red-500 px-4 py-3 text-gray-100 hover:bg-red-600 hover:text-gray-300"
+              onClick={toggleModal}
+            >
+              Close
+            </button>
+            <button
+              className=" m-3 rounded-md bg-teal-600 px-4 py-3 text-gray-100 hover:bg-teal-800 hover:text-gray-300"
+              // onClick={onApply}
+              type="submit"
+            >
+              Update
+            </button>
+          </div>
         </Form>
       </UpdateMorphologyModal>
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background">
@@ -114,7 +117,7 @@ export default function Patient() {
             </div>
           </div>
           <div className="flex min-h-screen w-full flex-col items-start justify-start px-5">
-            <div className="my-8 mx-5">
+            <div className="my-8 mx-2 md:mx-5">
               <div className="p-2 text-xl font-semibold text-white">
                 MRD:{" "}
                 <span className="p-2 text-xl font-bold text-teal-400">
@@ -145,7 +148,7 @@ export default function Patient() {
               </div>
               <button
                 onClick={toggleModal}
-                className="mt-5 mb-1 inline-block rounded bg-teal-600 px-6 py-2 text-base text-white shadow-lg hover:bg-slate-700 md:text-lg"
+                className="mx-2 mt-5 mb-1 inline-block rounded bg-teal-600 px-6 py-2 text-base text-white shadow-lg hover:bg-slate-700 md:text-lg"
               >
                 Update Morphology
               </button>
