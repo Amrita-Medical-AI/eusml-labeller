@@ -40,6 +40,17 @@ export default function PositionStopwatch({
   };
 
   useEffect(() => {
+    if (runningPosition === positionName && !positionTimer && procedureStarted) {
+      setPositionStartTime(endTime);
+      setPositionEndTime(endTime);
+      setPositionTimer(
+        setInterval(() => setPositionEndTime((prevTime) => prevTime + 1), 100)
+      );
+    }
+  }, [runningPosition, positionName, positionTimer, procedureStarted]);
+  
+
+  useEffect(() => {
     return () => {
       if (positionTimer) {
         clearInterval(positionTimer);

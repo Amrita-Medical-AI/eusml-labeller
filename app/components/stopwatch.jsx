@@ -15,6 +15,7 @@ export default function Stopwatch() {
       <ProcedureStopwatch
         onEndTimeChange={setInitialTime}
         onProcedureStart={setProcedureStarted}
+        secondaryStart={()=>setRunningPosition('Stomach 1')}
       />
       <TimerGrid
         endTime={initialTime}
