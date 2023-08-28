@@ -67,7 +67,7 @@ export const meta = () => [{ title: "Sign Up" }];
 
 export default function Join() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? undefined;
+  const redirectTo = searchParams.get("redirectTo") || "/";
   const actionData = useActionData();
   const emailRef = React.useRef(null);
   const passwordRef = React.useRef(null);
