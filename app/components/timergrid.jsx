@@ -1,5 +1,5 @@
 import * as React from "react";
-import StationStopwatch from "./StationStopwatch";
+import StationStopwatch from "./stationstopwatch";
 import PositionStopwatch from "./positionstopwatch";
 
 const StationColumns = ({
