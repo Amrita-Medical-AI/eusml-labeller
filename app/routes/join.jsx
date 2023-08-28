@@ -48,7 +48,7 @@ export const action = async ({ request }) => {
   const userExists = await isUserRegistered(email);
   if (userExists) {
     return json(
-      { errors: { email: "A user already exists with this email" } },
+      { errors: { email: "A user already registerd with this email" } },
       { status: 400 }
     );
   }

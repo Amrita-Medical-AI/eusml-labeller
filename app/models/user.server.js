@@ -67,9 +67,9 @@ export async function verifyLogin(email, password) {
 }
 
 export async function isUserRegistered(email) {
-  const user = getUserPasswordByEmail(email);
+  const user = await getUserPasswordByEmail(email);
 
-  if (user) {
+  if (user !== null && user.hash) {
     return true;
   }
 
