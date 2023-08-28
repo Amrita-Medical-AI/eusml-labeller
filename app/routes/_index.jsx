@@ -1,8 +1,14 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
-
+import { getUserId } from "~/session.server";
 import { createPatient } from "~/models/patient.server";
+
+export const loader = async ({ request }) => {
+  const userId = await getUserId(request);
+  if (!userId) return redirect("/login");
+  return json({});
+};
 
 export const action = async ({ request }) => {
   let formData = await request.formData();
