@@ -3,8 +3,11 @@ import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
 
 import { getUserId, createUserSession } from "~/session.server";
-
-import { createUser, getUserByEmail } from "~/models/user.server";
+import {
+  createUser,
+  getUserByEmail,
+  isUserRegistered,
+} from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export const loader = async ({ request }) => {
@@ -30,17 +33,22 @@ export const action = async ({ request }) => {
     );
   }
 
-  if (password.length < 8) {
+  if (password.length < 5) {
     return json(
       { errors: { password: "Password is too short" } },
       { status: 400 }
     );
   }
 
-  const existingUser = await getUserByEmail(email);
-  if (existingUser) {
+  const validUser = await getUserByEmail(email);
+  if (!validUser) {
+    return redirect("/invalid");
+  }
+
+  const userExists = await isUserRegistered(email);
+  if (userExists) {
     return json(
-      { errors: { email: "A user already exists with this email" } },
+      { errors: { email: "A user already registerd with this email" } },
       { status: 400 }
     );
   }
@@ -50,7 +58,7 @@ export const action = async ({ request }) => {
   return createUserSession({
     request,
     userId: user.id,
-    remember: false,
+    remember: true,
     redirectTo,
   });
 };
@@ -59,7 +67,7 @@ export const meta = () => [{ title: "Sign Up" }];
 
 export default function Join() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? undefined;
+  const redirectTo = searchParams.get("redirectTo") || "/";
   const actionData = useActionData();
   const emailRef = React.useRef(null);
   const passwordRef = React.useRef(null);
@@ -73,13 +81,25 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
+    <div className="flex min-h-full flex-col justify-center bg-background">
       <div className="mx-auto w-full max-w-md px-8">
+        <div className="mt-5 mb-10 flex flex-row justify-around">
+          <div className="text-6xl text-teal-600">
+            <h2 className="font-semibold">EUS</h2>
+            <h2>Labeler</h2>
+          </div>
+          <img
+            src="https://github.com/remix-run/grunge-stack/assets/90995338/079bd51b-d3ab-4ff9-bd07-713081165f98"
+            height={120}
+            width={120}
+            alt="logo"
+          />
+        </div>
         <Form method="post" className="space-y-6" noValidate>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block font-medium text-gray-100"
             >
               Email address
             </label>
@@ -94,7 +114,7 @@ export default function Join() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                className="w-full rounded border border-gray-200 px-2 py-1 text-lg"
               />
 
               {actionData?.errors?.email && (
@@ -108,7 +128,7 @@ export default function Join() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block font-medium text-gray-100"
             >
               Password
             </label>
@@ -135,7 +155,7 @@ export default function Join() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full rounded bg-blue-500 py-3 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
           >
             Create Account
           </button>

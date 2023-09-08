@@ -39,11 +39,6 @@ export async function createUser(email, password) {
     password: hashedPassword,
   });
 
-  await db.user.put({
-    pk: `email#${email}`,
-    email,
-  });
-
   const user = await getUserByEmail(email);
   invariant(user, `User not found after being created. This should not happen`);
 
@@ -69,4 +64,14 @@ export async function verifyLogin(email, password) {
   }
 
   return getUserByEmail(email);
+}
+
+export async function isUserRegistered(email) {
+  const user = await getUserPasswordByEmail(email);
+
+  if (user !== null && user.hash) {
+    return true;
+  }
+
+  return false;
 }

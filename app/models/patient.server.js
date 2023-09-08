@@ -1,7 +1,7 @@
 import arc from "@architect/functions";
 import { v4 as uuidv4 } from 'uuid';
 
-export async function createPatient({ mrd, name }) {
+export async function createPatient({ mrd, name, morphology, doctor}) {
   const db = await arc.tables();
   const patientID = uuidv4();
 
@@ -9,11 +9,15 @@ export async function createPatient({ mrd, name }) {
     pk: patientID,
     mrd: mrd,
     patientName: name,
+    morphology: morphology,
+    doctor: doctor,
   });
   return {
     patientId: result.pk,
     mrd: result.mrd,
     name: result.patientName,
+    morphology: result.morphology,
+    doctor: result.doctor,
   };
 }
 
@@ -26,10 +30,36 @@ export async function getPatientById({ patientId }) {
       patientId: result.pk,
       mrd: result.mrd,
       name: result.patientName,
+      morphology: result.morphology,
+      doctor: result.doctor,
       station1Start: result.station1Start,
       station1Stop: result.station1Stop,
     };
   }
+  return null;
+}
+
+export async function updatePatientDetails({ patientId, updatedData }) {
+  const db = await arc.tables();
+  const patient = await db.patient.get({ pk: patientId });
+
+  if (patient) {
+    const updatedPatient = {
+      ...patient,
+      ...updatedData,
+    };
+
+    await db.patient.put(updatedPatient);
+
+    return {
+      patientId: updatedPatient.pk,
+      mrd: updatedPatient.mrd,
+      name: updatedPatient.patientName,
+      morphology: updatedPatient.morphology,
+      doctor: updatedPatient.doctor,
+    };
+  }
+
   return null;
 }
 

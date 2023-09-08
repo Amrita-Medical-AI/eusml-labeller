@@ -36,9 +36,7 @@ export const action = async ({ request, params }) => {
     const [key, value] = entry;
     data[key] = formatTime(value);
   }
-  
   const procedureTimeStap = await putProcedureTimeStamps(data);
-  
 
   return redirect(`/patient/${patientId}`);
 };
@@ -48,7 +46,7 @@ export default function Label() {
   const data = useLoaderData();
 
   return (
-    <div className="flex min-h-screen flex-row items-start justify-center bg-sky-900">
+    <div className="flex min-h-screen flex-row items-start justify-center bg-background">
       <div className="flex w-full flex-col items-center">
         <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">
           <h1 className="p-2 text-center text-4xl font-bold text-white">MRD</h1>
@@ -67,8 +65,7 @@ export default function Label() {
           }}
         >
           <Stopwatch />
-          <div className="text-right">
-          </div>
+          <div className="text-right"></div>
         </Form>
       </div>
     </div>
