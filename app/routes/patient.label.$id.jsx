@@ -38,6 +38,7 @@ export const action = async ({ request, params }) => {
   }
   const procedureTimeStap = await putProcedureTimeStamps(data);
 
+
   return redirect(`/patient/${patientId}`);
 };
 

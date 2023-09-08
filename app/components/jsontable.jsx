@@ -1,8 +1,10 @@
 export default function JsonTable({ data }) {
   const groupedData = {};
   Object.keys(data).forEach((key) => {
+
     const nonTableKeys = ["patientName", "pk", "Date", 'doctor', 'morphology', 'mrd'];
     if (nonTableKeys.includes(key)) return;
+    
     const regex = /^(.+)\s\d+$/;
 
     const match = key.match(regex);
