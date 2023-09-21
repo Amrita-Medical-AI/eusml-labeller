@@ -1,5 +1,5 @@
 # eusml-labeller
-A simple to use web application to faciliate labelling at source during endoscopic ultrasound procedure.
+A simple-to-use web application to facilitate labelling at source during an endoscopic ultrasound procedure.
 
 <p align="center">
   <img src="assets/eusml_labeller_demo.gif" height="500" style="object-fit:contain">
@@ -13,8 +13,8 @@ Contents
 * [Deployment](#deployment)
 
 ## Why?
-Hospitals keep a video record of all endoscopy procedures. These videos server as valuble resource for training AI models but it require an expert to retrospectively label the videos which is a time consuming process. 
-eusml-labeller aims to streamline this process by allowing experts to label the videos during the procedure itself. This not only saves time but also ensures more accurate labelling as the expert can label the video in real-time.
+Hospitals keep a video record of all endoscopy procedures. These videos serve as valuable resources for training AI models but require an expert to retrospectively label the videos, which is a time-consuming process. 
+The eusml-labeler streamlines this process by allowing experts to label the videos during the procedure itself. This not only saves time but also ensures more accurate labelling as the expert can label the video in real time.
 
 The current version of the application allows us to keep track of the following labels:
 * Patient Name
@@ -112,7 +112,7 @@ Prior to your first deployment, you'll need to do a few things:
   npx arc env --add --env production SESSION_SECRET $(openssl rand -hex 32)
   ```
 
-  If you don't have openssl installed, you can also use [1password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
+  If you don't have OpenSSL installed, you can also use [1password](https://1password.com/password-generator) to generate a random secret; just replace `$(openssl rand -hex 32)` with the generated secret.
 
 ## Where do I find my CloudFormation?
 
