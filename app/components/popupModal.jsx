@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const UpdateMorphologyModal = ({ isOpen, onClose, children }) => {
+const PopupModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) {
     return null;
   }
@@ -15,4 +15,4 @@ const UpdateMorphologyModal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default UpdateMorphologyModal;
+export default PopupModal;
