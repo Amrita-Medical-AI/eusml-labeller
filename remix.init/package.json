@@ -8,6 +8,6 @@
     "@npmcli/package-json": "^2.0.0",
     "inquirer": "^8.2.5",
     "semver": "^7.3.8",
-    "yaml": "^2.2.1"
+    "yaml": "^2.2.2"
   }
 }
