@@ -7,7 +7,7 @@ import {
   updatePatientDetails,
 } from "~/models/patient.server";
 import JsonTable from "~/components/jsontable";
-import UpdateMorphologyModal from "../components/updateMorphology";
+import PopupModal from "~/components/popupModal";
 
 export const action = async ({ request, params }) => {
   let formData = await request.formData();
@@ -72,7 +72,7 @@ export default function Patient() {
 
   return (
     <div className="mx-auto w-full  bg-sky-900">
-      <UpdateMorphologyModal isOpen={modalOpen} onClose={toggleModal}>
+      <PopupModal isOpen={modalOpen} onClose={toggleModal}>
         <Form method="post" onSubmit={toggleModal}>
           <label className="mx-5 mt-5 text-2xl text-teal-400">
             Update Morphology
@@ -107,7 +107,7 @@ export default function Patient() {
             </button>
           </div>
         </Form>
-      </UpdateMorphologyModal>
+      </PopupModal>
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background">
         <div className="flex w-full flex-col items-center ">
           <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">

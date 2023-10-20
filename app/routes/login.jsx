@@ -77,7 +77,7 @@ export default function LoginPage() {
         <div className="my-10 flex flex-row justify-around">
           <div className="text-6xl text-teal-600">
             <h2 className="font-semibold">EUS</h2>
-            <h2>Labeler</h2>
+            <h2>Labeller</h2>
           </div>
           <img
             src="https://github.com/remix-run/grunge-stack/assets/90995338/079bd51b-d3ab-4ff9-bd07-713081165f98"
