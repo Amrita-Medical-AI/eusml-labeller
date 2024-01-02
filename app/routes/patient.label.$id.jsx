@@ -31,16 +31,15 @@ export const action = async ({ request, params }) => {
   const data = {
     patientId,
   };
-
   for (let entry of formData.entries()) {
     const [key, value] = entry;
     data[key] = formatTime(value);
   }
   const procedureTimeStap = await putProcedureTimeStamps(data);
 
-
   return redirect(`/patient/${patientId}`);
 };
+
 
 export default function Label() {
   const actionData = useActionData();
