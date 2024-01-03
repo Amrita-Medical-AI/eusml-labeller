@@ -1,4 +1,4 @@
-import { Form, useLoaderData, useActionData } from "@remix-run/react";
+import { Form, useLoaderData, useActionData, useFetcher } from "@remix-run/react";
 import {
   getPatientById,
   putProcedureTimeStamps,
@@ -38,9 +38,13 @@ export const action = async ({ request, params }) => {
   }
   const procedureTimeStap = await putProcedureTimeStamps(data);
 
+  if (!procedureTimeStap){
+    action(request, params)
+  }
 
   return redirect(`/patient/${patientId}`);
 };
+
 
 export default function Label() {
   const actionData = useActionData();
