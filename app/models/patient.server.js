@@ -9,6 +9,7 @@ export async function createPatient({ mrd, name, morphology, doctor}) {
     pk: patientID,
     mrd: mrd,
     patientName: name,
+    morphology_presumed: morphology,
     morphology: morphology,
     doctor: doctor,
   });
@@ -16,7 +17,8 @@ export async function createPatient({ mrd, name, morphology, doctor}) {
     patientId: result.pk,
     mrd: result.mrd,
     name: result.patientName,
-    morphology: result.morphology,
+    morphology_presumed: result.morphology_presumed,
+    morphology : result.morphology,
     doctor: result.doctor,
   };
 }
