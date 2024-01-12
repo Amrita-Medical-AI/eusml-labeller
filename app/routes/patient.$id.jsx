@@ -52,7 +52,7 @@ export default function Patient() {
   const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
-  const morphologyOptions = ["Normal", "CCP", "Cysts", "Others"];
+  const morphologyOptions = ["Normal", "CCP", "Cysts", "Mass", "Others"];
 
   const handleCheckboxChange = (option) => {
     let updatedOptions = [];

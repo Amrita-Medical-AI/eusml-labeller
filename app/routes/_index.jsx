@@ -54,7 +54,7 @@ export default function LabellerIndexPage() {
   const [selectedMorphology, setSelectedMorphology] = React.useState([]);
   const [selectedDoctor, setSelectedDoctor] = React.useState("");
 
-  const morphologyOptions = ["Normal", "CCP", "Cysts", "Others"];
+  const morphologyOptions = ["Normal", "CCP", "Cysts", "Mass", "Others"];
   const doctorsOptions = ["Dr. Priya", "Dr. Anoop", "Dr. Sharon"];
 
   const handleCheckboxChange = (option) => {
@@ -85,7 +85,7 @@ export default function LabellerIndexPage() {
         }}
       >
         {/* Name */}
-        <label className="mt-5 text-3xl text-teal-400">Patient Name</label>
+        <label className="mt-4 text-3xl text-teal-400">Patient Name</label>
         <input
           name="name"
           id="name"
@@ -103,7 +103,7 @@ export default function LabellerIndexPage() {
         )}
 
         {/* MRD */}
-        <label className="mt-5 text-3xl text-teal-400">Patient MRD</label>
+        <label className="mt-4 text-3xl text-teal-400">Patient MRD</label>
         <input
           name="mrd"
           type="number"
@@ -119,7 +119,7 @@ export default function LabellerIndexPage() {
         )}
 
         {/* Morphology */}
-        <label className="mt-5 text-3xl text-teal-400">Morphology</label>
+        <label className="mt-4 text-3xl text-teal-400">Morphology</label>
         <div className="flex flex-col gap-2 text-white">
           {morphologyOptions.map((option) => (
             <label key={option} className="mx-3 flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function LabellerIndexPage() {
         )}
 
         {/* Doctor */}
-        <label className="mt-5 text-3xl text-teal-400">Doctor</label>
+        <label className="mt-4 text-3xl text-teal-400">Doctor</label>
         <select
           name="doctor"
           value={selectedDoctor}
