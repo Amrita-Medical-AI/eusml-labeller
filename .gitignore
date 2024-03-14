@@ -13,3 +13,6 @@ sam.yaml
 /app/styles/tailwind.css
 /cypress.env.json
 
+
+# Sentry Config File
+.sentryclirc

@@ -4,6 +4,7 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import * as Sentry from '@sentry/remix';
 
 const ABORT_DELAY = 5000;
 
@@ -51,3 +52,9 @@ export default function handleRequest(
     setTimeout(abort, ABORT_DELAY);
   });
 }
+
+Sentry.init({
+  dsn: process.env.NODE_ENV === 'production' ? process.env.SENTRY_DSN : undefined,
+  tracesSampleRate: 1,
+  debug: process.env.NODE_ENV === 'development',
+});
