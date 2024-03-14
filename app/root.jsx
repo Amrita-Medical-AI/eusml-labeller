@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import { withSentry } from "@sentry/remix";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 import OfflineModal from "./components/offlineModal";
@@ -26,7 +27,7 @@ export const loader = async ({ request }) => {
   });
 };
 
-export default function App() {
+function App() {
   return (
     <html lang="en" className="h-full">
       <head>
@@ -45,3 +46,5 @@ export default function App() {
     </html>
   );
 }
+
+export default withSentry(App);

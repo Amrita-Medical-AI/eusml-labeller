@@ -49,6 +49,7 @@ export default function FNAStopwatch({ endTime, procedureStarted, runningStation
         <div className="relative w-full mx-4 flex items-center justify-center h-14 md:min-w-[min-content]">
         <div className="relative mx-4 flex h-14 w-96 items-center justify-center">
           <label
+            id="FNA-Button"
             className="absolute left-0 right-0 text-center text-3xl text-white"
           >
             {stationTimer
