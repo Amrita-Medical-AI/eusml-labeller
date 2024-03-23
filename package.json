@@ -28,6 +28,7 @@
   "dependencies": {
     "@architect/architect": "^10.10.3",
     "@architect/functions": "^5.4.0",
+    "@aws-sdk/client-secrets-manager": "^3.535.0",
     "@heroicons/react": "^1.0.6",
     "@remix-run/architect": "^1.14.3",
     "@remix-run/node": "^1.14.3",
@@ -35,6 +36,7 @@
     "@remix-run/server-runtime": "^1.14.3",
     "@tailwindcss/forms": "^0.5.5",
     "bcryptjs": "2.4.3",
+    "crypto-js": "^4.2.0",
     "cuid": "^2.1.8",
     "isbot": "^3.6.7",
     "react": "^18.2.0",

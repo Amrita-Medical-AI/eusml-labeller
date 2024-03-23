@@ -1,14 +1,17 @@
 import arc from "@architect/functions";
 import { v4 as uuidv4 } from 'uuid';
+import {encryptString, decryptString} from './cipher.server';
 
 export async function createPatient({ mrd, name, morphology, doctor}) {
   const db = await arc.tables();
   const patientID = uuidv4();
+  const encodedMrd = encryptString(mrd);
+  const encodedName = encryptString(name);
 
   const result = await db.patient.put({
     pk: patientID,
-    mrd: mrd,
-    patientName: name,
+    mrd: encodedMrd,
+    patientName: encodedName,
     morphology_presumed: morphology,
     morphology: morphology,
     doctor: doctor,
@@ -30,12 +33,13 @@ export async function getPatientById({ patientId }) {
   if (result) {
     return {
       patientId: result.pk,
-      mrd: result.mrd,
-      name: result.patientName,
+      mrd: decryptString(result.mrd),
+      name: decryptString(result.patientName),
       morphology: result.morphology,
       doctor: result.doctor,
       station1Start: result.station1Start,
       station1Stop: result.station1Stop,
+      date: result.Date,
     };
   }
   return null;
@@ -52,11 +56,11 @@ export async function updatePatientDetails({ patientId, updatedData }) {
     };
 
     await db.patient.put(updatedPatient);
-
+    
     return {
       patientId: updatedPatient.pk,
-      mrd: updatedPatient.mrd,
-      name: updatedPatient.patientName,
+      mrd: decryptString(updatedPatient.mrd),
+      name: decryptString(updatedPatient.patientName),
       morphology: updatedPatient.morphology,
       doctor: updatedPatient.doctor,
     };
@@ -82,8 +86,8 @@ export async function putProcedureTimeStamps(props) {
 
     return {
       patientId: updatedPatient.pk,
-      mrd: updatedPatient.mrd,
-      name: updatedPatient.patientName,
+      mrd: decryptString(updatedPatient.mrd),
+      name: decryptString(updatedPatient.patientName),
       "Start Procedure": "00:00:00",
       ...rest,
     };
