@@ -1,4 +1,6 @@
 import CryptoJS from "crypto-js";
+import arc from "@architect/functions";
+
 import {
   SecretsManagerClient,
   GetSecretValueCommand,
@@ -43,3 +45,63 @@ export const decryptString = (cipherText) => {
   }
   return CryptoJS.AES.decrypt(cipherText, secret).toString(CryptoJS.enc.Utf8);
 };
+
+export async function encryptPatient({ patientID, mrd, name, doctor }) {
+
+  const date = new Date().toISOString().split('T')[0];
+  const data = {
+    pk: patientID,
+    mrd: encryptString(mrd),
+    name: encryptString(name),
+    mrd_hash: CryptoJS.SHA256(mrd).toString(),
+    date: date,
+    doctor: encryptString(doctor),
+  }
+
+  const db = await arc.tables();
+  const result = await db.patient_info.put(data);
+
+  return {
+    patientId: result.pk,
+    mrd: decryptString(result.mrd),
+    name: decryptString(result.name),
+    doctor: decryptString(result.doctor),
+    date: result.date
+  };
+};
+
+export async function getPatientById({ patientId }) {
+  const db = await arc.tables();
+  const result = await db.patient_info.get({ pk: patientId });
+  if (!result) {
+    return null;
+  }
+  return {
+    patientId: result.pk,
+    mrd: decryptString(result.mrd),
+    name: decryptString(result.name),
+    doctor: decryptString(result.doctor),
+    date: result.date
+  };
+}
+
+export async function getPatientByMrd({ mrd }) {
+  const db = await arc.tables();
+  const result = await db.patient_info.scan({
+    FilterExpression: 'mrd_hash = :mrd_hash',
+    ExpressionAttributeValues: {
+      ':mrd_hash': CryptoJS.SHA256(mrd).toString(),
+    },
+  });
+  const patient = result.Items[0];
+  if (!patient) {
+    return null;
+  }
+  return {
+    patientId: patient.pk,
+    mrd: decryptString(patient.mrd),
+    name: decryptString(patient.name),
+    doctor: decryptString(patient.doctor),
+    date: patient.date
+  };
+}

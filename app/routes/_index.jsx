@@ -177,7 +177,7 @@ export default function LabellerIndexPage() {
         {/* Start Button */}
         <button
           type="submit"
-          className="flex items-center justify-center rounded-full bg-teal-400 py-4 px-5 text-lg text-white hover:bg-teal-500 focus:bg-teal-300"
+          className="flex items-center justify-center rounded-full bg-teal-400 px-5 py-4 text-lg text-white hover:bg-teal-500 focus:bg-teal-300"
           style={{
             transition: "all 0.2s ease-in-out",
             marginTop: "20%",
