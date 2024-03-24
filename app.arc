@@ -20,3 +20,6 @@ password
 
 patient
   pk *String # PatientId
+
+patient_info
+  pk *String # PatientId
