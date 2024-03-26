@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { encryptPatient } from './cipher.server';
 import { uniqueNamesGenerator, adjectives, names, languages } from 'unique-names-generator';
 
+
 export async function createPatient({ mrd, name, morphology, doctor }) {
   const db = await arc.tables();
   const patientID = uuidv4();
@@ -19,6 +20,7 @@ export async function createPatient({ mrd, name, morphology, doctor }) {
   const result = await db.patient.put({
     pk: patientID,
     pseudo_name: patientPseudoName,
+
     morphology_presumed: morphology,
     morphology: morphology,
   });
