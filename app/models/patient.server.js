@@ -1,6 +1,8 @@
 import arc from "@architect/functions";
 import { v4 as uuidv4 } from 'uuid';
 import { encryptPatient } from './cipher.server';
+import { uniqueNamesGenerator, adjectives, names, languages } from 'unique-names-generator';
+
 
 export async function createPatient({ mrd, name, morphology, doctor }) {
   const db = await arc.tables();
@@ -8,8 +10,17 @@ export async function createPatient({ mrd, name, morphology, doctor }) {
 
   const patient_pii = await encryptPatient({ patientID, mrd, name, doctor });
 
+  const patientPseudoName = uniqueNamesGenerator({
+    dictionaries: [adjectives,languages, names],
+    style: 'capital',
+    separator: '-',
+    seed: patientID
+  }); 
+
   const result = await db.patient.put({
     pk: patientID,
+    pseudo_name: patientPseudoName,
+
     morphology_presumed: morphology,
     morphology: morphology,
   });

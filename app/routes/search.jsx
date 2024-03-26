@@ -8,6 +8,7 @@ import PatientDataCard from "../components/PatientDataCard";
 export const loader = async ({ request, params }) => {
   const userId = await getUserId(request);
   if (!userId) return redirect("/login");
+  return json({});
 };
 
 export const action = async ({ request, params }) => {
