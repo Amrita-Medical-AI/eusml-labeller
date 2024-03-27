@@ -57,14 +57,19 @@ export const decryptString = async (encryption_key, cipherText) => {
   return CryptoJS.AES.decrypt(cipherText, secret).toString(CryptoJS.enc.Utf8);
 };
 
-export async function encryptPatient({ patientID, mrd, name, doctor, encryption_key }) {
+export async function encryptPatient({ patientID, mrd, name, doctor, user }) {
+
+  let encryption_key = user.encryption_key;
+  if (!encryption_key) encryption_key = "Default";
+
+  const org = user.org;
 
   const date = new Date().toISOString().split('T')[0];
   const data = {
     pk: patientID,
     mrd: await encryptString(encryption_key, mrd),
     name: await encryptString(encryption_key, name),
-    mrd_hash: CryptoJS.SHA256(mrd).toString(),
+    mrd_hash: CryptoJS.SHA256(org+mrd).toString(),
     date: date,
     doctor: await encryptString(encryption_key, doctor),
     encryption_key: encryption_key,
@@ -107,10 +112,11 @@ export async function getPatientById({ patientId, user }) {
 
 export async function getPatientByMrd({ mrd, user }) {
   const db = await arc.tables();
+  const org = user.org;
   const result = await db.patient_info.scan({
     FilterExpression: 'mrd_hash = :mrd_hash',
     ExpressionAttributeValues: {
-      ':mrd_hash': CryptoJS.SHA256(mrd).toString(),
+      ':mrd_hash': CryptoJS.SHA256(org+mrd).toString(),
     },
   });
   const patient = result.Items[0];

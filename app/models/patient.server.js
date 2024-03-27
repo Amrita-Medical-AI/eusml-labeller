@@ -8,9 +8,7 @@ export async function createPatient({ mrd, name, morphology, doctor, user }) {
   const db = await arc.tables();
   const patientID = uuidv4();
 
-  let encryption_key = user.encryption_key;
-  if (!encryption_key) encryption_key = "Default"
-  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor, encryption_key });
+  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor, user });
 
   let userOrg = user.org;
   if (!userOrg) userOrg = "Default"
