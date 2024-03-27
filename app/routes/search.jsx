@@ -1,13 +1,16 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import { getUserId } from "~/session.server";
+import { getUser } from "~/session.server";
 import * as React from "react";
 import { getPatientById, getPatientByMrd } from "~/models/cipher.server";
 import PatientDataCard from "../components/PatientDataCard";
 
 export const loader = async ({ request, params }) => {
-  const userId = await getUserId(request);
-  if (!userId) return redirect("/login");
+  const user = await getUser(request);
+  if (!user) return redirect("/login");
+  if (user.decryption_access == false) {
+    return redirect("/decrypt-auth");
+  }
   return json({});
 };
 
@@ -24,15 +27,16 @@ export const action = async ({ request, params }) => {
     return json({ errors });
   }
 
+  const user = await getUser(request);
+
   let patient = null;
   if (patientId) {
-    patient = await getPatientById({ patientId });
+    patient = await getPatientById({ patientId, user });
     if (!patient) {
       errors.message = "Patient not found";
     }
   } else {
-    // const mrdInt = parseInt(mrd);
-    patient = await getPatientByMrd({ mrd });
+    patient = await getPatientByMrd({ mrd, user });
     if (!patient) {
       errors.message = "Patient not found";
     }

@@ -40,11 +40,9 @@ export const action = async ({ request, params }) => {
   return redirect(`/patient/${patientId}`);
 };
 
-
 export default function Label() {
-
   return (
-    <div className="flex min-h-screen flex-row items-start justify-center bg-background"> 
+    <div className="flex min-h-screen flex-row items-start justify-center bg-background">
       <div className="flex w-full flex-col items-center">
         <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">
           <h1 className="my-3 text-2xl font-bold text-white">

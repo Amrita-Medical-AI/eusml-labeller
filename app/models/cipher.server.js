@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+import CryptoJS, { enc } from "crypto-js";
 import arc from "@architect/functions";
 
 import {
@@ -6,11 +6,18 @@ import {
   GetSecretValueCommand,
 } from "@aws-sdk/client-secrets-manager";
 
-const secret_name = "EUSML_Patient_Encryption";
+const getSecretKey = async (encryption_key) => {
 
-let secret = process.env.NODE_ENV === "development" ? process.env.SECRET_KEY : null;
+  let secret = null;
 
-(async () => {
+  if (process.env.NODE_ENV === "development") {
+    return process.env.SECRET_KEY
+  }
+
+  if (!encryption_key) encryption_key = "Default";
+
+  const secret_name = encryption_key;
+
   try {
     const client = new SecretsManagerClient({
       region: "ap-south-1",
@@ -29,33 +36,38 @@ let secret = process.env.NODE_ENV === "development" ? process.env.SECRET_KEY : n
     }
   } catch (error) {
     console.error("Error fetching secret:", error);
+    return null
   }
-})();
+  return secret
+}
 
-export const encryptString = (plainText) => {
+export const encryptString = async (encryption_key, plainText) => {
+  const secret = await getSecretKey(encryption_key)
   if (!secret) {
     throw new Error("Secret key not initialized.");
   }
   return CryptoJS.AES.encrypt(plainText, secret).toString();
 };
 
-export const decryptString = (cipherText) => {
+export const decryptString = async (encryption_key, cipherText) => {
+  const secret = await getSecretKey(encryption_key)
   if (!secret) {
     throw new Error("Secret key not initialized.");
   }
   return CryptoJS.AES.decrypt(cipherText, secret).toString(CryptoJS.enc.Utf8);
 };
 
-export async function encryptPatient({ patientID, mrd, name, doctor }) {
+export async function encryptPatient({ patientID, mrd, name, doctor, encryption_key }) {
 
   const date = new Date().toISOString().split('T')[0];
   const data = {
     pk: patientID,
-    mrd: encryptString(mrd),
-    name: encryptString(name),
+    mrd: await encryptString(encryption_key, mrd),
+    name: await encryptString(encryption_key, name),
     mrd_hash: CryptoJS.SHA256(mrd).toString(),
     date: date,
-    doctor: encryptString(doctor),
+    doctor: await encryptString(encryption_key, doctor),
+    encryption_key: encryption_key,
   }
 
   const db = await arc.tables();
@@ -63,29 +75,37 @@ export async function encryptPatient({ patientID, mrd, name, doctor }) {
 
   return {
     patientId: result.pk,
-    mrd: decryptString(result.mrd),
-    name: decryptString(result.name),
-    doctor: decryptString(result.doctor),
+    mrd: await decryptString(encryption_key, result.mrd),
+    name: await decryptString(encryption_key, result.name),
+    doctor: await decryptString(encryption_key, result.doctor),
     date: result.date
   };
 };
 
-export async function getPatientById({ patientId }) {
+export async function getPatientById({ patientId, user }) {
   const db = await arc.tables();
-  const result = await db.patient_info.get({ pk: patientId });
-  if (!result) {
+  const patient = await db.patient_info.get({ pk: patientId });
+  if (!patient) {
     return null;
   }
+
+  let encryption_key = user.encryption_key;
+  if (!encryption_key) encryption_key = "Default";
+
+  if(patient.encryption_key !== encryption_key){
+    return null;
+  }
+
   return {
-    patientId: result.pk,
-    mrd: decryptString(result.mrd),
-    name: decryptString(result.name),
-    doctor: decryptString(result.doctor),
-    date: result.date
+    patientId: patient.pk,
+    mrd: await decryptString(encryption_key, patient.mrd),
+    name: await decryptString(encryption_key, patient.name),
+    doctor: await decryptString(encryption_key, patient.doctor),
+    date: patient.date
   };
 }
 
-export async function getPatientByMrd({ mrd }) {
+export async function getPatientByMrd({ mrd, user }) {
   const db = await arc.tables();
   const result = await db.patient_info.scan({
     FilterExpression: 'mrd_hash = :mrd_hash',
@@ -97,11 +117,17 @@ export async function getPatientByMrd({ mrd }) {
   if (!patient) {
     return null;
   }
+  let encryption_key = user.encryption_key;
+  if (!encryption_key) encryption_key = "Default";
+
+  if(patient.encryption_key !== encryption_key){
+    return null;
+  }
   return {
     patientId: patient.pk,
-    mrd: decryptString(patient.mrd),
-    name: decryptString(patient.name),
-    doctor: decryptString(patient.doctor),
+    mrd: await decryptString(encryption_key, patient.mrd),
+    name: await decryptString(encryption_key, patient.name),
+    doctor: await decryptString(encryption_key, patient.doctor),
     date: patient.date
   };
 }

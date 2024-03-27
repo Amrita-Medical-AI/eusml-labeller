@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData, Link, Form } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
+import { getUser } from "~/session.server";
 import {
   getProcedureTimeStamps,
   updatePatientDetails,
@@ -32,7 +33,8 @@ export const action = async ({ request, params }) => {
 
 export const loader = async ({ request, params }) => {
   const patientId = params.id;
-  const patient = await getPatientById({ patientId });
+  const user = await getUser(request);
+  const patient = await getPatientById({ patientId, user });
   const procedureTimeStamps = await getProcedureTimeStamps({ patientId });
   if (!patient) {
     throw new Response("Not Found", { status: 404 });

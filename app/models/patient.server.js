@@ -4,23 +4,28 @@ import { encryptPatient } from './cipher.server';
 import { uniqueNamesGenerator, adjectives, names, languages } from 'unique-names-generator';
 
 
-export async function createPatient({ mrd, name, morphology, doctor }) {
+export async function createPatient({ mrd, name, morphology, doctor, user }) {
   const db = await arc.tables();
   const patientID = uuidv4();
 
-  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor });
+  let encryption_key = user.encryption_key;
+  if (!encryption_key) encryption_key = "Default"
+  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor, encryption_key });
+
+  let userOrg = user.org;
+  if (!userOrg) userOrg = "Default"
 
   const patientPseudoName = uniqueNamesGenerator({
-    dictionaries: [adjectives,languages, names],
+    dictionaries: [adjectives, languages, names],
     style: 'capital',
     separator: '-',
     seed: patientID
-  }); 
+  });
 
   const result = await db.patient.put({
     pk: patientID,
     pseudo_name: patientPseudoName,
-
+    org: userOrg,
     morphology_presumed: morphology,
     morphology: morphology,
   });
