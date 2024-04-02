@@ -10,7 +10,15 @@ export async function getUserById(id) {
   });
 
   const [record] = result.Items;
-  if (record) return { id: record.pk, email: record.email };
+  if (record) {
+    return {
+      id: record.pk,
+      email: record.email,
+      org: record.org,
+      encryption_key: record.encryption_key,
+      decryption_access: record.decryption_access
+    };
+  }
   return null;
 }
 

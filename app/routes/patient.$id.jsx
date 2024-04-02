@@ -1,11 +1,12 @@
 import React from "react";
 import { useLoaderData, Link, Form } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
+import { getUser } from "~/session.server";
 import {
-  getPatientById,
   getProcedureTimeStamps,
   updatePatientDetails,
 } from "~/models/patient.server";
+import { getPatientById } from "~/models/cipher.server";
 import JsonTable from "~/components/jsontable";
 
 export const action = async ({ request, params }) => {
@@ -32,7 +33,8 @@ export const action = async ({ request, params }) => {
 
 export const loader = async ({ request, params }) => {
   const patientId = params.id;
-  const patient = await getPatientById({ patientId });
+  const user = await getUser(request);
+  const patient = await getPatientById({ patientId, user });
   const procedureTimeStamps = await getProcedureTimeStamps({ patientId });
   if (!patient) {
     throw new Response("Not Found", { status: 404 });
@@ -45,7 +47,7 @@ export default function Patient() {
   const [showSaveMorphology, setShowSaveMorphology] = React.useState(false);
   const timeStamps = data.procedureTimeStamps;
   const [selectedMorphology, setSelectedMorphology] = React.useState(
-    data?.patient?.morphology
+    data?.procedureTimeStamps?.morphology
   );
 
   const saveMorphology = () => {

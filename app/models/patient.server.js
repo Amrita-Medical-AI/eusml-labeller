@@ -1,25 +1,36 @@
 import arc from "@architect/functions";
 import { v4 as uuidv4 } from 'uuid';
+import { encryptPatient } from './cipher.server';
+import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator';
 
-export async function createPatient({ mrd, name, morphology, doctor}) {
+
+export async function createPatient({ mrd, name, morphology, doctor, user }) {
   const db = await arc.tables();
   const patientID = uuidv4();
 
+  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor, user });
+
+  let userOrg = user.org;
+  if (!userOrg) userOrg = "Default"
+
+  const patientPseudoName = uniqueNamesGenerator({
+    dictionaries: [adjectives, names],
+    style: 'capital',
+    separator: '-',
+    seed: patientID
+  });
+
   const result = await db.patient.put({
     pk: patientID,
-    mrd: mrd,
-    patientName: name,
+    pseudo_name: patientPseudoName,
+    org: userOrg,
     morphology_presumed: morphology,
     morphology: morphology,
-    doctor: doctor,
   });
   return {
     patientId: result.pk,
-    mrd: result.mrd,
-    name: result.patientName,
     morphology_presumed: result.morphology_presumed,
-    morphology : result.morphology,
-    doctor: result.doctor,
+    morphology: result.morphology,
   };
 }
 
@@ -30,10 +41,7 @@ export async function getPatientById({ patientId }) {
   if (result) {
     return {
       patientId: result.pk,
-      mrd: result.mrd,
-      name: result.patientName,
       morphology: result.morphology,
-      doctor: result.doctor,
       station1Start: result.station1Start,
       station1Stop: result.station1Stop,
     };
@@ -55,8 +63,6 @@ export async function updatePatientDetails({ patientId, updatedData }) {
 
     return {
       patientId: updatedPatient.pk,
-      mrd: updatedPatient.mrd,
-      name: updatedPatient.patientName,
       morphology: updatedPatient.morphology,
       doctor: updatedPatient.doctor,
     };
@@ -82,8 +88,6 @@ export async function putProcedureTimeStamps(props) {
 
     return {
       patientId: updatedPatient.pk,
-      mrd: updatedPatient.mrd,
-      name: updatedPatient.patientName,
       "Start Procedure": "00:00:00",
       ...rest,
     };

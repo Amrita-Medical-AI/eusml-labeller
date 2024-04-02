@@ -1,4 +1,4 @@
-import { Form, useLoaderData, useActionData } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import {
   getPatientById,
   putProcedureTimeStamps,
@@ -40,18 +40,13 @@ export const action = async ({ request, params }) => {
   return redirect(`/patient/${patientId}`);
 };
 
-
 export default function Label() {
-  const actionData = useActionData();
-  const data = useLoaderData();
-
   return (
-    <div className="flex min-h-screen flex-row items-start justify-center bg-background"> 
+    <div className="flex min-h-screen flex-row items-start justify-center bg-background">
       <div className="flex w-full flex-col items-center">
         <div className="flex w-full flex-row items-center justify-center bg-slate-700 p-2">
-          <h1 className="p-2 text-center text-4xl font-bold text-white">MRD</h1>
-          <h1 className="p-2 text-center text-4xl font-bold text-teal-400">
-            {data?.patient?.mrd}
+          <h1 className="my-3 text-2xl font-bold text-white">
+            Label Patient Data
           </h1>
         </div>
         <Form

@@ -1,7 +1,7 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
-import { getUserId } from "~/session.server";
+import { getUserId, getUser } from "~/session.server";
 import { createPatient } from "~/models/patient.server";
 
 export const loader = async ({ request }) => {
@@ -43,8 +43,8 @@ export const action = async ({ request }) => {
       { status: 400 }
     );
   }
-
-  const patient = await createPatient({ mrd, name, morphology, doctor });
+  const user = await getUser(request);
+  const patient = await createPatient({ mrd, name, morphology, doctor, user });
   return redirect(`/patient/label/${patient.patientId}`);
 };
 
@@ -177,7 +177,7 @@ export default function LabellerIndexPage() {
         {/* Start Button */}
         <button
           type="submit"
-          className="flex items-center justify-center rounded-full bg-teal-400 py-4 px-5 text-lg text-white hover:bg-teal-500 focus:bg-teal-300"
+          className="flex items-center justify-center rounded-full bg-teal-400 px-5 py-4 text-lg text-white hover:bg-teal-500 focus:bg-teal-300"
           style={{
             transition: "all 0.2s ease-in-out",
             marginTop: "20%",
