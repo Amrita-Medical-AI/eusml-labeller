@@ -3,6 +3,7 @@ import { Form, useActionData } from "@remix-run/react";
 import { getUser } from "~/session.server";
 import * as React from "react";
 import { getPatientById, getPatientByMrd } from "~/models/cipher.server";
+import { updatePatientDetails } from "~/models/patient.server";
 import PatientDataCard from "../components/PatientDataCard";
 
 export const loader = async ({ request, params }) => {
@@ -17,36 +18,59 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   let formData = await request.formData();
 
-  let patientId = formData.getAll("uuid")[0];
-  let mrd = formData.getAll("mrd")[0];
-
-  const errors = {};
-
-  if (!patientId && !mrd) {
-    errors.message = "Enter either UUID or MRD";
-    return json({ errors });
+  if (!formData.has("intent")) {
+    return json({ errors: { message: "Invalid request" } }, { status: 400 });
   }
 
-  const user = await getUser(request);
+  if (formData.get("intent") == "search") {
+    let patientId = formData.getAll("uuid")[0];
+    let mrd = formData.getAll("mrd")[0];
 
-  let patient = null;
-  if (patientId) {
-    patient = await getPatientById({ patientId, user });
-    if (!patient) {
-      errors.message = "Patient not found";
+    const errors = {};
+
+    if (!patientId && !mrd) {
+      errors.message = "Enter either UUID or MRD";
+      return json({ errors });
     }
-  } else {
-    patient = await getPatientByMrd({ mrd, user });
-    if (!patient) {
-      errors.message = "Patient not found";
+
+    const user = await getUser(request);
+
+    let patient = null;
+    if (patientId) {
+      patient = await getPatientById({ patientId, user });
+      if (!patient) {
+        errors.message = "Patient not found";
+      }
+    } else {
+      patient = await getPatientByMrd({ mrd, user });
+      if (!patient) {
+        errors.message = "Patient not found";
+      }
     }
-  }
 
-  if (Object.keys(errors).length > 0) {
-    return json({ errors });
-  }
+    if (Object.keys(errors).length > 0) {
+      return json({ errors });
+    }
 
-  return json({ patient });
+    return json({ patient });
+  }
+  if (formData.get("intent") == "biopsy") {
+    const biopsy = formData.get("biopsy");
+    const patientId = formData.get("patientId");
+    const cancer = formData.get("cancer");
+
+    const updatedData = {
+      cancer: cancer,
+      biopsy: biopsy,
+    };
+    const newData = await updatePatientDetails({
+      patientId: patientId,
+      updatedData: updatedData,
+    });
+
+    return {}
+  }
+  return {}
 };
 
 export default function PatientDecryptPage() {
@@ -63,6 +87,7 @@ export default function PatientDecryptPage() {
         </h1>
       </div>
       <Form method="post" className="flex flex-col justify-center ">
+        <input type="hidden" name="intent" value={"search"} />
         <div className="flex flex-col">
           <div className="flex flex-col justify-center md:flex-row">
             <label className="my-3 text-2xl text-slate-300 md:mx-3 md:my-0">
