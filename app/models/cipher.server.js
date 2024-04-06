@@ -94,6 +94,10 @@ export async function getPatientById({ patientId, user }) {
     return null;
   }
 
+  const biopsyResult = await db.patient.get({ pk: patient.pk });
+  const cancer = biopsyResult.cancer;
+  const biopsy = biopsyResult.biopsy;
+
   let encryption_key = user.encryption_key;
   if (!encryption_key) encryption_key = "Default";
 
@@ -106,23 +110,30 @@ export async function getPatientById({ patientId, user }) {
     mrd: await decryptString(encryption_key, patient.mrd),
     name: await decryptString(encryption_key, patient.name),
     doctor: await decryptString(encryption_key, patient.doctor),
-    date: patient.date
+    date: patient.date,
+    cancer: cancer,
+    biopsy: biopsy,
   };
 }
 
 export async function getPatientByMrd({ mrd, user }) {
   const db = await arc.tables();
   const org = user.org;
-  const result = await db.patient_info.scan({
+  const patientResult = await db.patient_info.scan({
     FilterExpression: 'mrd_hash = :mrd_hash',
     ExpressionAttributeValues: {
       ':mrd_hash': CryptoJS.SHA256(org+mrd).toString(),
     },
   });
-  const patient = result.Items[0];
+
+  const patient = patientResult.Items[0];
   if (!patient) {
     return null;
   }
+  const biopsyResult = await db.patient.get({ pk: patient.pk });
+  const cancer = biopsyResult.cancer;
+  const biopsy = biopsyResult.biopsy;
+
   let encryption_key = user.encryption_key;
   if (!encryption_key) encryption_key = "Default";
 
@@ -134,6 +145,8 @@ export async function getPatientByMrd({ mrd, user }) {
     mrd: await decryptString(encryption_key, patient.mrd),
     name: await decryptString(encryption_key, patient.name),
     doctor: await decryptString(encryption_key, patient.doctor),
-    date: patient.date
+    date: patient.date,
+    cancer: cancer,
+    biopsy: biopsy,
   };
 }

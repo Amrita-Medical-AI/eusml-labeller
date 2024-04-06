@@ -2,10 +2,15 @@ import React from "react";
 import { Form } from "@remix-run/react";
 
 export default function PatientDataCard({ patient }) {
-  const { patientId, mrd, name, date, doctor } = patient;
+  const { patientId, mrd, name, date, doctor, cancer, biopsy } = patient;
 
   const [cancerValue, setCancerValue] = React.useState("");
   const [biopsyValue, setBiopsyValue] = React.useState("");
+
+  React.useEffect(() => {
+    setCancerValue(cancer);
+    setBiopsyValue(biopsy);
+  }, [cancer, biopsy]);
 
   return (
     <div className="mx-auto max-w-lg rounded-md bg-white p-4 shadow-lg">
@@ -53,17 +58,17 @@ export default function PatientDataCard({ patient }) {
         </button>
       </div>
       <hr className="my-4" />
-      <div className="my-4 text-xl font-semibold"> Patient Report </div>
+      <div className="my-3 text-xl font-semibold"> Patient Report </div>
       <Form method={"post"}>
         <input type="hidden" name="intent" value={"biopsy"} />
         <input type="hidden" name="patientId" value={patientId} />
-        <div className="my-2 p-2">
+        <div className="my-1 p-2">
           <label>
             Cancer:
             <select
               className="my-1 w-full rounded border border-gray-300 p-2"
               name="cancer"
-              value={cancerValue}
+              value={cancerValue===undefined ?  "" : cancerValue}
               onChange={(e) => setCancerValue(e.target.value)}
             >
               <option value="">Select...</option>
@@ -79,7 +84,7 @@ export default function PatientDataCard({ patient }) {
             <textarea
               className="my-1 w-full rounded border border-gray-300 p-2"
               name="biopsy"
-              value={biopsyValue}
+              value={biopsyValue ? biopsyValue : ""}
               onChange={(e) => setBiopsyValue(e.target.value)}
             />
           </div>
