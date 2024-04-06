@@ -57,7 +57,14 @@ export const action = async ({ request, params }) => {
   if (formData.get("intent") == "biopsy") {
     const biopsy = formData.get("biopsy");
     const patientId = formData.get("patientId");
-    const cancer = formData.get("cancer");
+    var cancer = formData.get("cancer");
+
+    if (cancer == "true") {
+      cancer = true;
+    }
+    else if (cancer == "false") {
+      cancer = false;
+    }
 
     const updatedData = {
       cancer: cancer,
