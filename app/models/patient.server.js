@@ -1,7 +1,7 @@
 import arc from "@architect/functions";
 import { v4 as uuidv4 } from 'uuid';
 import { encryptPatient } from './cipher.server';
-import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator';
+import { uniqueNamesGenerator, adjectives, names, NumberDictionary } from 'unique-names-generator';
 
 
 export async function createPatient({ mrd, name, morphology, doctor, user }) {
@@ -13,8 +13,9 @@ export async function createPatient({ mrd, name, morphology, doctor, user }) {
   let userOrg = user.org;
   if (!userOrg) userOrg = "Default"
 
+  const numberDictionary = NumberDictionary.generate({ min: 10, max: 99 });
   const patientPseudoName = uniqueNamesGenerator({
-    dictionaries: [adjectives, names],
+    dictionaries: [adjectives, names, numberDictionary],
     style: 'capital',
     separator: '-',
     seed: patientID
