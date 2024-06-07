@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProcedureStopwatch from "./procedurestopwatch";
 import FNAStopwatch from "./FNAstopwatch";
+import TumorStopWatch from "./TumorStopWatch";
 import TimerGrid from "./timergrid";
 
 export default function Stopwatch() {
@@ -14,7 +15,7 @@ export default function Stopwatch() {
       <ProcedureStopwatch
         onEndTimeChange={setInitialTime}
         onProcedureStart={setProcedureStarted}
-        secondaryStart={()=>setRunningPosition('Stomach 1')}
+        secondaryStart={() => setRunningPosition("Stomach 1")}
       />
       <TimerGrid
         endTime={initialTime}
@@ -24,11 +25,18 @@ export default function Stopwatch() {
         setRunningPosition={setRunningPosition}
         procedureStarted={procedureStarted}
       />
-      <FNAStopwatch
-        endTime={initialTime}
-        procedureStarted={procedureStarted}
-        runningStation={runningStation}
-      />
+      <div className="flex min-w-full flex-row items-center gap-4">
+        <FNAStopwatch
+          endTime={initialTime}
+          procedureStarted={procedureStarted}
+          runningStation={runningStation}
+        />
+        <TumorStopWatch
+          endTime={initialTime}
+          procedureStarted={procedureStarted}
+          runningStation={runningStation}
+        />
+      </div>
     </div>
   );
 }

@@ -112,7 +112,7 @@ export default function Patient() {
                 </span>
               </div>
               <div className="my-3">
-                <label className="mx-2 mt-5 text-xl font-semibold text-white">
+                <label className="mr-2 ml-4 mt-4 text-lg font-semibold text-white">
                   Update Morphology
                 </label>
                   <Form method="post" onSubmit={saveMorphology}>
