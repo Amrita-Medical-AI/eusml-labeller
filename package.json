@@ -28,7 +28,7 @@
   "dependencies": {
     "@architect/architect": "^10.16.3",
     "@architect/functions": "^5.4.0",
-    "@aws-sdk/client-secrets-manager": "^3.535.0",
+    "@aws-sdk/client-secrets-manager": "^3.658.1",
     "@heroicons/react": "^1.0.6",
     "@remix-run/architect": "^1.14.3",
     "@remix-run/node": "^1.14.3",
