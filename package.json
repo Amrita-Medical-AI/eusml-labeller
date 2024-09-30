@@ -26,7 +26,7 @@
     "/public/build"
   ],
   "dependencies": {
-    "@architect/architect": "^10.16.3",
+    "@architect/architect": "^11.1.0",
     "@architect/functions": "^5.4.0",
     "@aws-sdk/client-secrets-manager": "^3.535.0",
     "@heroicons/react": "^1.0.6",
