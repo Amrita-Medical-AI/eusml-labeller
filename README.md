@@ -1,9 +1,5 @@
-# eusml-labeller
+# Liver-labeller
 A simple-to-use web application to facilitate labelling at source during an endoscopic ultrasound procedure.
-
-<p align="center">
-  <img src="assets/eusml_labeller_demo.gif" height="500" style="object-fit:contain">
-</p>
 
 Contents
 ========
@@ -16,24 +12,7 @@ Contents
 Hospitals keep a video record of all endoscopy procedures. These videos serve as valuable resources for training AI models but require an expert to retrospectively label the videos, which is a time-consuming process. 
 The eusml-labeler streamlines this process by allowing experts to label the videos during the procedure itself. This not only saves time but also ensures more accurate labelling as the expert can label the video in real time.
 
-The current version of the application allows us to keep track of the following labels:
-* Patient Name
-* MRD
-### Morphology
-* Normal
-* CCP
-* Cysts
-* Others
- ### Stations
- * Station 1
- * Station 2
- * Station 3
- ### Locations
- * Stomach
- * D1
- * D2
-### Others
- * FNA
+
 
 ## Installation
 To install the application, follow these steps:

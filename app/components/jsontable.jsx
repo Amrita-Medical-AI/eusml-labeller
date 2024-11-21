@@ -2,7 +2,7 @@ export default function JsonTable({ data }) {
   const groupedData = {};
   Object.keys(data).forEach((key) => {
 
-    const nonTableKeys = ["patientName", "pk", "Date", 'doctor', 'morphology', 'mrd', 'morphology_presumed', 'pseudo_name', 'org'];
+    const nonTableKeys = ["patientName", "pk", "Date", 'mrd', 'pseudo_name', 'org'];
     if (nonTableKeys.includes(key)) return;
     
     const regex = /^(.+)\s\d+$/;
@@ -28,7 +28,7 @@ export default function JsonTable({ data }) {
     if (b === "Start Procedure") return 1;
     if (b === "Stop Procedure" && a !== "Start Procedure") return 1;
 
-    const groupRegex = /^(Start|Stop) (Procedure|Station|Stomach|D)\s(\d+)$/;
+    const groupRegex = /^(Start|Stop) (Procedure|Liver)\s(\d+)$/;
     const aMatch = a.match(groupRegex);
     const bMatch = b.match(groupRegex);
 
