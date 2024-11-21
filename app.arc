@@ -1,5 +1,5 @@
 @app
-liver-labeller
+eusml-labeller-88d9
 
 @aws
 region ap-south-1
