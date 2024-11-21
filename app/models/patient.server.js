@@ -38,7 +38,6 @@ export async function getPatientById({ patientId }) {
   if (result) {
     return {
       patientId: result.pk,
-      morphology: result.morphology
     };
   }
   return null;
@@ -58,8 +57,6 @@ export async function updatePatientDetails({ patientId, updatedData }) {
 
     return {
       patientId: updatedPatient.pk,
-      morphology: updatedPatient.morphology,
-      doctor: updatedPatient.doctor,
     };
   }
 
