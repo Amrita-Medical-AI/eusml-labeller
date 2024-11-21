@@ -74,15 +74,13 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-full flex-col justify-center bg-background">
       <div className="mx-auto w-full max-w-md px-8">
-        <div className="my-10 flex flex-row justify-around">
+      <div className="mb-10 mt-5 justify-around">
           <div className="text-6xl text-teal-600">
-            <h2 className="font-semibold">EUS</h2>
+            <h2 className="font-semibold">Liver</h2>
             <h2>Labeller</h2>
           </div>
-          <img
-            src="https://github.com/remix-run/grunge-stack/assets/90995338/079bd51b-d3ab-4ff9-bd07-713081165f98"
-            alt="logo"
-          />
+
+          <span className="px-1 text-neutral-300">By TexNano</span>
         </div>
         <Form method="post" className="space-y-6" noValidate>
           <div>

@@ -9,7 +9,6 @@ import {
 const getSecretKey = async (encryption_key) => {
 
   let secret = null;
-
   if (process.env.NODE_ENV === "development") {
     return process.env.SECRET_KEY
   }
@@ -57,13 +56,12 @@ export const decryptString = async (encryption_key, cipherText) => {
   return CryptoJS.AES.decrypt(cipherText, secret).toString(CryptoJS.enc.Utf8);
 };
 
-export async function encryptPatient({ patientID, mrd, name, doctor, user }) {
+export async function encryptPatient({ patientID, mrd, name, user }) {
 
   let encryption_key = user.encryption_key;
   if (!encryption_key) encryption_key = "Default";
 
   const org = user.org;
-
   const date = new Date().toISOString().split('T')[0];
   const data = {
     pk: patientID,
@@ -71,7 +69,6 @@ export async function encryptPatient({ patientID, mrd, name, doctor, user }) {
     name: await encryptString(encryption_key, name),
     mrd_hash: CryptoJS.SHA256(org+mrd).toString(),
     date: date,
-    doctor: await encryptString(encryption_key, doctor),
     encryption_key: encryption_key,
   }
 
@@ -82,7 +79,6 @@ export async function encryptPatient({ patientID, mrd, name, doctor, user }) {
     patientId: result.pk,
     mrd: await decryptString(encryption_key, result.mrd),
     name: await decryptString(encryption_key, result.name),
-    doctor: await decryptString(encryption_key, result.doctor),
     date: result.date
   };
 };
@@ -98,6 +94,9 @@ export async function getPatientById({ patientId, user }) {
   const cancer = biopsyResult.cancer;
   const biopsy = biopsyResult.biopsy;
 
+  if (!user) {
+    throw new Error("User object is null.");
+  }
   let encryption_key = user.encryption_key;
   if (!encryption_key) encryption_key = "Default";
 
@@ -109,7 +108,6 @@ export async function getPatientById({ patientId, user }) {
     patientId: patient.pk,
     mrd: await decryptString(encryption_key, patient.mrd),
     name: await decryptString(encryption_key, patient.name),
-    doctor: await decryptString(encryption_key, patient.doctor),
     date: patient.date,
     cancer: cancer,
     biopsy: biopsy,

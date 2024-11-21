@@ -7,12 +7,12 @@ import { updatePatientDetails } from "~/models/patient.server";
 import PatientDataCard from "../components/PatientDataCard";
 
 export const loader = async ({ request, params }) => {
-  const user = await getUser(request);
-  if (!user) return redirect("/login");
-  if (user.decryption_access == false) {
-    return redirect("/decrypt-auth");
-  }
-  return json({});
+  return redirect("/");
+  // const user = await getUser(request);
+  // if (user.decryption_access == false) {
+  //   return redirect("/decrypt-auth");
+  // }
+  // return json({});
 };
 
 export const action = async ({ request, params }) => {

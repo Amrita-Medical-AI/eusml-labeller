@@ -4,11 +4,11 @@ import { encryptPatient } from './cipher.server';
 import { uniqueNamesGenerator, adjectives, names, NumberDictionary } from 'unique-names-generator';
 
 
-export async function createPatient({ mrd, name, morphology, doctor, user }) {
+export async function createPatient({ mrd, name, user }) {
   const db = await arc.tables();
   const patientID = uuidv4();
 
-  const patient_pii = await encryptPatient({ patientID, mrd, name, doctor, user });
+  const patient_pii = await encryptPatient({ patientID, mrd, name, user });
 
   let userOrg = user.org;
   if (!userOrg) userOrg = "Default"
@@ -25,13 +25,9 @@ export async function createPatient({ mrd, name, morphology, doctor, user }) {
     pk: patientID,
     pseudo_name: patientPseudoName,
     org: userOrg,
-    morphology_presumed: morphology,
-    morphology: morphology,
   });
   return {
     patientId: result.pk,
-    morphology_presumed: result.morphology_presumed,
-    morphology: result.morphology,
   };
 }
 
@@ -42,9 +38,6 @@ export async function getPatientById({ patientId }) {
   if (result) {
     return {
       patientId: result.pk,
-      morphology: result.morphology,
-      station1Start: result.station1Start,
-      station1Stop: result.station1Stop,
     };
   }
   return null;
@@ -64,8 +57,6 @@ export async function updatePatientDetails({ patientId, updatedData }) {
 
     return {
       patientId: updatedPatient.pk,
-      morphology: updatedPatient.morphology,
-      doctor: updatedPatient.doctor,
     };
   }
 

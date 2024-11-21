@@ -83,24 +83,17 @@ export default function Join() {
   return (
     <div className="flex min-h-full flex-col justify-center bg-background">
       <div className="mx-auto w-full max-w-md px-8">
-        <div className="mt-5 mb-10 flex flex-row justify-around">
+        <div className="mb-10 mt-5 justify-around">
           <div className="text-6xl text-teal-600">
-            <h2 className="font-semibold">EUS</h2>
+            <h2 className="font-semibold">Liver</h2>
             <h2>Labeller</h2>
           </div>
-          <img
-            src="https://github.com/remix-run/grunge-stack/assets/90995338/079bd51b-d3ab-4ff9-bd07-713081165f98"
-            height={120}
-            width={120}
-            alt="logo"
-          />
+
+          <span className="px-1 text-neutral-300">By TexNano</span>
         </div>
         <Form method="post" className="space-y-6" noValidate>
           <div>
-            <label
-              htmlFor="email"
-              className="block font-medium text-gray-100"
-            >
+            <label htmlFor="email" className="block font-medium text-gray-100">
               Email address
             </label>
             <div className="mt-1">
@@ -155,7 +148,7 @@ export default function Join() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-blue-500 py-3 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full rounded bg-blue-500 px-4 py-3 text-white hover:bg-blue-600 focus:bg-blue-400"
           >
             Create Account
           </button>

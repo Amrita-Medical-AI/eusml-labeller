@@ -35,6 +35,7 @@ export const action = async ({ request, params }) => {
     const [key, value] = entry;
     data[key] = formatTime(value);
   }
+  console.log("The data:", data);
   const procedureTimeStap = await putProcedureTimeStamps(data);
 
   return redirect(`/patient/${patientId}`);
